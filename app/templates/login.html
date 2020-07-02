@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block title %}Login{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <h1>Login</h1>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {{ messages[0] }}
+        {% endif %}
+    {% endwith %}
+    <form action="/login" method="post">
+        <input type="email" name="email" placeholder="email"><br>
+        <input type="password" name="password" placeholder="password"><br>
+        <input type="checkbox" name="remember" class="">
+        <label for="rememberMe">Remember me</label><br>
+        <input type="submit" value="Submit"><br>
+    </form>
+{% endblock %}
