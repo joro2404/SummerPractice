@@ -57,14 +57,16 @@ class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256), unique=True, nullable=False)
     price = db.Column(db.Float(5, 2), nullable=False)
+    available = db.Column(db.Integer, nullable=False)
     overallRaiting = db.Column(db.Float(1, 2), nullable=False)
     category_id = db.Column(db.Integer, ForeignKey('categories.id'), nullable=False)
     #category = relationship('categories', back_populates="products")
 
-    def __init__(self, id, name, price, overallRaiting, category_id):
+    def __init__(self, id, name, price, available, overallRaiting, category_id):
         self.id = id
         self.name = name
         self.price = price
+        self.available = available
         self.overallRaiting = overallRaiting
         self.category_id = category_id
 
@@ -112,3 +114,10 @@ class Favourite(db.Model):
         self.id = id
         self.user_id = user_id
         self.product_id = product_id
+
+class Picture(db.Model):
+    __tablename__ = "pictures"
+
+    id = db.Column(db.Integer, primary_key=True)
+    product_id = db.Column(db.Integer, ForeignKey('products.id'), nullable=False)
+    path = db.Column(db.Text, nullable=False) 
