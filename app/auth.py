@@ -60,7 +60,7 @@ def register():
                 flash('Password missmatch!')
                 return redirect(url_for('auth.register'))
 
-            new_user = User(id=None, name=name, email=email, password=generate_password_hash(password, method='sha256'), admin=False, phone_number=None, address=None)
+            new_user = User(id=None, name=name, email=email, password=generate_password_hash(password, method='sha256'), is_admin=False, phone_number=None, address=None)
 
             db.session.add(new_user)
             db.session.commit()
