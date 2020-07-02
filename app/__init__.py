@@ -9,7 +9,7 @@ def create_app():
     app.config['SECRET_KEY'] = secret_key
 
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://postgres:localhost:5432/store'
+    app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql+psycopg2://postgres:password@localhost:5432/store'
     #db = SQLAlchemy(app)
     db.init_app(app)
     
