@@ -41,7 +41,11 @@
                     </div>
                 </div>
                 <div class="ht-right">
+                    {% if not current_user.is_authenticated %}
                     <a href="/login" class="login-panel"><i class="fa fa-user"></i>Login</a>
+                    {% else %}
+                    <a href="/logout" class="login-panel"><i class="fa fa-user"></i>Logout</a>
+                    {% endif %}
                     <div class="lan-selector">
                         <select class="language_drop" name="countries" id="countries" style="width:300px;">
                             <option value='yt' data-image="{{ url_for('static', filename='img/flag-1.jpg') }}" data-imagecss="flag yt"

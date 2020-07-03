@@ -13,16 +13,18 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(256), unique=True, nullable=False)
     email = db.Column(db.Text, unique=True, nullable=False)
     password = db.Column(db.Text, nullable=False)
-    is_admin = db.Column(db.Boolean, nullable=False)
+    is_admin = db.Column(db.Boolean, nullable=False, default=False)
+    is_confirmed = db.Column(db.Boolean, nullable=False, default=False)
     phone_number = db.Column(db.Text, nullable=True)
     address = db.Column(db.Text, nullable=True)
 
-    def __init__(self, id, name, email, password, is_admin, phone_number, address):
+    def __init__(self, id, name, email, password, is_admin, is_confirmed, phone_number, address):
         self.id = id
         self.name = name
         self.email = email
         self.password = password
         self.is_admin = is_admin
+        self.is_confirmed= is_confirmed
         self.phone_number = phone_number 
         self.address = address
 
