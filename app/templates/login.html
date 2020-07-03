@@ -4,17 +4,49 @@
     {{ super() }}
 {% endblock %}
 {% block content %}
-    <h1>Login</h1>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {{ messages[0] }}
-        {% endif %}
-    {% endwith %}
-    <form action="/login" method="post">
-        <input type="email" name="email" placeholder="email"><br>
-        <input type="password" name="password" placeholder="password"><br>
-        <input type="checkbox" name="remember" class="">
-        <label for="rememberMe">Remember me</label><br>
-        <input type="submit" value="Submit"><br>
-    </form>
+    
+    <!-- Login Section Begin -->
+    <div class="register-login-section spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 offset-lg-3">
+                    <div class="login-form">
+                        <h2>Login</h2>
+                        <div class="warn-message">
+                        {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                                {{ messages[0] }}
+                            {% endif %}
+                        {% endwith %}
+                        </div>
+                        <form action="/login" method="post">
+                            <div class="group-input">
+                                <label for="email">Email address *</label>
+                                <input type="text" name="email" required>
+                            </div>
+                            <div class="group-input">
+                                <label for="password">Password *</label>
+                                <input type="password" name="password" required>
+                            </div>
+                            <div class="group-input gi-check">
+                                <div class="gi-more">
+                                    <label for="save-pass">
+                                        Save Password
+                                        <input type="checkbox" id="save-pass" name="remember">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <a href="#" class="forget-pass">Forget your Password</a>
+                                </div>
+                            </div>
+                            <button type="submit" class="site-btn login-btn">Sign In</button>
+                        </form>
+                        <div class="switch-login">
+                            <a href="/register" class="or-login">Or Create An Account</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Login Form Section End -->
 {% endblock %}

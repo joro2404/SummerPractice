@@ -2,10 +2,14 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required, current_user
 from .models import User
-from . import db
+from . import db, mail, secret_key
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired
+from flask_mail import Message
 
 
 auth = Blueprint('auth', __name__)
+
+serializer = URLSafeTimedSerializer(secret_key)
 
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -28,6 +32,11 @@ def login():
             if not user or not check_password_hash(user.password, password):
                 flash('Please check your login credentials!')
                 return redirect(url_for('auth.login'))
+                
+            if not user.is_confirmed:
+                flash('Please confirm your email!')
+                return redirect(url_for('auth.login'))
+
 
             login_user(user, remember=remember)
 
@@ -60,12 +69,39 @@ def register():
                 flash('Password missmatch!')
                 return redirect(url_for('auth.register'))
 
-            new_user = User(id=None, name=name, email=email, password=generate_password_hash(password, method='sha256'), is_admin=False, phone_number=None, address=None)
+            new_user = User(id=None, name=name, email=email, password=generate_password_hash(password, method='sha256'), is_admin=False, is_confirmed=False, phone_number=None, address=None)
 
             db.session.add(new_user)
             db.session.commit()
 
+            token = serializer.dumps(email, salt='email-confirm')
+
+            msg = Message('Confirm Email', sender='sqbedmail@gmail.com', recipients=[email])
+
+            link = url_for('auth.confirm_email', token=token, _external=True)
+
+            msg.body = link
+
+            mail.send(msg)
+
+            flash('Please confirm your email!')
+
             return redirect(url_for('auth.login'))
+
+
+@auth.route('/confirm/<token>')
+def confirm_email(token):
+    try:
+        email = serializer.loads(token, salt='email-confirm', max_age=3600)
+    except SignatureExpired:
+        flash('Token expired!')
+        return redirect(url_for('auth.register'))
+
+    flash('Success. Now you can login!')
+
+    db.session.query(User).filter_by(email=email).update({ 'is_confirmed':True })
+    db.session.commit()
+    return redirect(url_for('auth.login'))
 
 
 @auth.route('/logout')

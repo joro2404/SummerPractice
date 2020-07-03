@@ -4,17 +4,54 @@
     {{ super() }}
 {% endblock %}
 {% block content %}
-    <h1>Register</h1>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {{ messages[0] }}
-        {% endif %}
-    {% endwith %}
-    <form action="/register" method="post">
+    <!-- <h1>Register</h1> -->
+    <!-- <form action="/register" method="post">
         <input type="text" name="name" placeholder="name"><br>
         <input type="email" name="email" placeholder="email"><br>
         <input type="password" name="password" placeholder="password"><br>
         <input type="password" name="password_confirm" placeholder="confirm password"><br>
         <input type="submit" value="Submit"><br>
-    </form>
+    </form> -->
+    <!-- Register Section Begin -->
+    <div class="register-login-section spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 offset-lg-3">
+                    <div class="register-form">
+                        <h2>Register</h2>
+                        <div class="warn-message">
+                        {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                                {{ messages[0] }}
+                            {% endif %}
+                        {% endwith %}
+                        </div>
+                        <form action="/register" method="POST">
+                            <div class="group-input">
+                                <label for="email">Email address *</label>
+                                <input type="emai" name="email" required>
+                            </div>
+                            <div class="group-input">
+                                <label for="name">Name *</label>
+                                <input type="text" name="name" required>
+                            </div>
+                            <div class="group-input">
+                                <label for="password">Password *</label>
+                                <input type="password" name="password" required>
+                            </div>
+                            <div class="group-input">
+                                <label for="password_confirm">Confirm Password *</label>
+                                <input type="password" name="password_confirm" required>
+                            </div>
+                            <button type="submit" class="site-btn register-btn">REGISTER</button>
+                        </form>
+                        <div class="switch-login">
+                            <a href="/login" class="or-login">Or Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Register Form Section End -->
 {% endblock %}
