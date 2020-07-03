@@ -464,7 +464,7 @@ ol {
 }
 
 .inner-header .advanced-search .input-group {
-	max-width: 70%;
+	max-width: 100%;
 	height: 100%;
 }
 
@@ -3756,6 +3756,13 @@ ol {
 /*---------------------
   Register Form
 -----------------------*/
+
+.warn-message {
+	text-align: center;
+	color: red;
+	margin-bottom: 35px;
+	font-size: 18px;
+}
 
 .register-login-section {
 	padding-top: 72px;
