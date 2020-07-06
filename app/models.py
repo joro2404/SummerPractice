@@ -102,7 +102,7 @@ class Order(db.Model):
         self.date = date
         self.user_id = user_id
         self.product_id = product_id
-        self.status_id = 
+        self.status_id = status_id
         self.payment_method_id = payment_method_id
         self.is_paid = is_paid
         self.phone_number = phone_number
@@ -187,3 +187,14 @@ class PaymentMethod(db.Model):
     def __init__(self, id, payment_method):
         self.id = id
         self.payment_method = payment_method
+
+
+class Brand(db.Model):
+    __tablename__ = "brands"
+
+    id = db.Column(db.Integer, primary_key=True)
+    brandname = db.Column(db.Text, nullable=False)
+
+    def __init__(self, id, brandname):
+        self.id = id
+        self.brandname = brandname
