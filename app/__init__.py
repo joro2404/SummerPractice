@@ -47,4 +47,7 @@ def create_app():
     from .pay import pay as pay_blueprint
     app.register_blueprint(pay_blueprint)
 
+    from .products import products as products_blueprint
+    app.register_blueprint(products_blueprint)
+
     return app
