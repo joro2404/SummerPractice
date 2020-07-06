@@ -94,7 +94,7 @@ class Order(db.Model):
     user_id = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
     status_id = db.Column(db.Integer, ForeignKey('status.id'), nullable=False)
     date = db.Column(db.Date, nullable=False)
-    payment_method_id = db.Column(db.Integer, ForeignKey('paymentMethods.id'), nullable=False)
+    payment_method_id = db.Column(db.Integer, ForeignKey('payment_methods.id'), nullable=False)
     is_paid = db.Column(db.Boolean, nullable=False)
     phone_number = db.Column(db.Text, nullable=False)
     address = db.Column(db.Text, nullable=False)
