@@ -35,14 +35,16 @@
                     <div class="filter-widget">
                         <h4 class="fw-title">Brand</h4>
                         <div class="fw-brand-check">
+                            {% for brand in brands %}
                             <div class="bc-item">
-                                <label for="bc-calvin">
-                                    Calvin Klein
-                                    <input type="checkbox" id="bc-calvin">
+                                <label for="bc-{{ brand.brandname }}">
+                                    {{ brand.brandname }}
+                                    <input type="checkbox" id="bc-{{ brand.brandname }}">
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
-                            <div class="bc-item">
+                            {% endfor %}
+                            <!-- <div class="bc-item">
                                 <label for="bc-diesel">
                                     Diesel
                                     <input type="checkbox" id="bc-diesel">
@@ -62,7 +64,7 @@
                                     <input type="checkbox" id="bc-tommy">
                                     <span class="checkmark"></span>
                                 </label>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="filter-widget">
@@ -75,42 +77,13 @@
                                 </div>
                             </div>
                             <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                data-min="33" data-max="98">
+                                data-min="{{ cheapest | int }}" data-max="{{ most_expensive | int }}">
                                 <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
                                 <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
                                 <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
                             </div>
                         </div>
                         <a href="#" class="filter-btn">Filter</a>
-                    </div>
-                    <div class="filter-widget">
-                        <h4 class="fw-title">Color</h4>
-                        <div class="fw-color-choose">
-                            <div class="cs-item">
-                                <input type="radio" id="cs-black">
-                                <label class="cs-black" for="cs-black">Black</label>
-                            </div>
-                            <div class="cs-item">
-                                <input type="radio" id="cs-violet">
-                                <label class="cs-violet" for="cs-violet">Violet</label>
-                            </div>
-                            <div class="cs-item">
-                                <input type="radio" id="cs-blue">
-                                <label class="cs-blue" for="cs-blue">Blue</label>
-                            </div>
-                            <div class="cs-item">
-                                <input type="radio" id="cs-yellow">
-                                <label class="cs-yellow" for="cs-yellow">Yellow</label>
-                            </div>
-                            <div class="cs-item">
-                                <input type="radio" id="cs-red">
-                                <label class="cs-red" for="cs-red">Red</label>
-                            </div>
-                            <div class="cs-item">
-                                <input type="radio" id="cs-green">
-                                <label class="cs-green" for="cs-green">Green</label>
-                            </div>
-                        </div>
                     </div>
                     <div class="filter-widget">
                         <h4 class="fw-title">Size</h4>
@@ -166,33 +139,35 @@
                     </div>
                     <div class="product-list">
                         <div class="row">
+                            {% for product in products %}
                             <div class="col-lg-4 col-sm-6">
                                 <div class="product-item">
                                     <div class="pi-pic">
                                         <img src="{{ url_for('static', filename='img/products/product-1.jpg') }}" alt="">
-                                        <div class="sale pp-sale">Sale</div>
+                                        <!-- <div class="sale pp-sale">Sale</div> -->
                                         <div class="icon">
                                             <i class="icon_heart_alt"></i>
                                         </div>
                                         <ul>
                                             <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                            <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                            <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
+                                            <!-- <li class="quick-view"><a href="#">+ Quick View</a></li> -->
+                                            <!-- <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li> -->
                                         </ul>
                                     </div>
                                     <div class="pi-text">
-                                        <div class="catagory-name">Towel</div>
+                                        <div class="brand-name">{{ brands_products[loop.index - 1].brandname }}</div>
                                         <a href="#">
-                                            <h5>Pure Pineapple</h5>
+                                            <h5>{{ product.name }}</h5>
                                         </a>
                                         <div class="product-price">
-                                            $14.00
-                                            <span>$35.00</span>
+                                            ${{ '%0.2f'|format(product.price) }}
+                                            <!-- <span>$35.00</span> -->
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-sm-6">
+                            {% endfor %}
+                            <!-- <div class="col-lg-4 col-sm-6">
                                 <div class="product-item">
                                     <div class="pi-pic">
                                         <img src="{{ url_for('static', filename='img/products/product-2.jpg') }}" alt="">
@@ -392,7 +367,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="loading-more">

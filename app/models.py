@@ -43,7 +43,7 @@ class Tag(db.Model):
 
 
 class ProductTags(db.Model):
-    __tablename__ = "productstags"
+    __tablename__ = "products_tags"
 
     id = db.Column(db.Integer, primary_key=True)
     product_id = db.Column(db.Integer, ForeignKey('products.id'), nullable=False)
@@ -73,16 +73,16 @@ class Product(db.Model):
     name = db.Column(db.Text, unique=True, nullable=False)
     price = db.Column(db.Float(5, 2), nullable=False)
     brand_id = db.Column(db.Integer, ForeignKey('brands.id'), nullable=False)
-    overall_raiting = db.Column(db.Float(1, 2), nullable=False)
+    overall_rating = db.Column(db.Float(1, 2), nullable=False)
     gender = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text, nullable=False)
 
-    def __init__(self, id, name, price, brand_id, overall_raiting, gender, description):
+    def __init__(self, id, name, price, brand_id, overall_rating, gender, description):
         self.id = id
         self.name = name
         self.price = price
         self.brand_id = brand_id
-        self.overall_raiting = overall_raiting
+        self.overall_rating = overall_rating
         self.gender = gender
         self.description = description
 
