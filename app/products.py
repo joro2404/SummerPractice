@@ -22,7 +22,7 @@ def view_catalog():
     return render_template('catalog.html', products=products, brands_products=brands_products, brands=brands, cheapest=cheapest[0], most_expensive=most_expensive[0])
 
 
-@products.route('/product/<int:id>')
+@products.route('/catalog/<int:id>')
 def view_product(id):
 
     product = Product.query.get(id)
