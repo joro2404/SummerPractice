@@ -10,7 +10,9 @@ class User(UserMixin, db.Model):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(256), unique=True, nullable=False)
+    username = db.Column(db.Text, unique=True, nullable=False)
+    first_name = db.Column(db.Text, nullable=False)
+    last_name = db.Column(db.Text, nullable=False)
     email = db.Column(db.Text, unique=True, nullable=False)
     password = db.Column(db.Text, nullable=False)
     is_admin = db.Column(db.Boolean, nullable=False, default=False)
@@ -29,34 +31,35 @@ class User(UserMixin, db.Model):
         self.address = address
 
 
-class Category(db.Model):
-    __tablename__ = "categories"
+class Tag(db.Model):
+    __tablename__ = "tags"
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(128), unique=True, nullable=False)
+    tag = db.Column(db.Text, unique=True, nullable=False)
 
-    def __init__(self, id, name):
+    def __init__(self, id, tag):
         self.id = id
-        self.name = name
+        self.tag = tag
 
-class Subcategory(db.Model):
-    __tablename__ = "subcategories"
+
+class ProductTags(db.Model):
+    __tablename__ = "productstags"
 
     id = db.Column(db.Integer, primary_key=True)
-    category_id = db.Column(db.Integer, ForeignKey('categories.id'), nullable=False)
-    subcategory = db.Column(db.Text, nullable=False)
+    product_id = db.Column(db.Integer, ForeignKey('products.id'), nullable=False)
+    tag_id = db.Column(db.Integer, ForeignKey('tags.id'), nullable=False)
 
-    def __init__(self, id, category_id, subcategory):
+    def __init__(self, id, product_id, tag_id):
         self.id = id
-        self.category_id = category_id
-        self.subcategory = subcategory
+        self.product_id = product_id
+        self.tag_id = tag_id
 
 
 class Status(db.Model):
     __tablename__ = "status"
     
     id = db.Column(db.Integer, primary_key=True)
-    status = db.Column(db.String(128), unique=True, nullable=False)
+    status = db.Column(db.Text, unique=True, nullable=False)
 
     def __init__(self, id, status):
         self.id = id
@@ -67,41 +70,39 @@ class Product(db.Model):
     __tablename__ = "products"
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(256), unique=True, nullable=False)
+    name = db.Column(db.Text, unique=True, nullable=False)
     price = db.Column(db.Float(5, 2), nullable=False)
     brand_id = db.Column(db.Integer, ForeignKey('brands.id'), nullable=False)
     overall_raiting = db.Column(db.Float(1, 2), nullable=False)
-    category_id = db.Column(db.Integer, ForeignKey('categories.id'), nullable=False)
     gender = db.Column(db.Text, nullable=False)
+    description = db.Column(db.Text, nullable=False)
 
-    def __init__(self, id, name, price, brand_id, overall_raiting, category_id, gender):
+    def __init__(self, id, name, price, brand_id, overall_raiting, gender, description):
         self.id = id
         self.name = name
         self.price = price
         self.brand_id = brand_id
         self.overall_raiting = overall_raiting
-        self.category_id = category_id
         self.gender = gender
+        self.description = description
 
 
 class Order(db.Model):
     __tablename__ = "orders"
 
     id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.Date, nullable=False)
     user_id = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
-    product_id = db.Column(db.Integer, ForeignKey('products.id'), nullable=False)
     status_id = db.Column(db.Integer, ForeignKey('status.id'), nullable=False)
-    payment_method_id = db.Column(db.Integer, ForeignKey('paymentMethods.id'), nullable=False)
+    date = db.Column(db.Date, nullable=False)
+    payment_method_id = db.Column(db.Integer, ForeignKey('payment_methods.id'), nullable=False)
     is_paid = db.Column(db.Boolean, nullable=False)
     phone_number = db.Column(db.Text, nullable=False)
     address = db.Column(db.Text, nullable=False)
 
-    def __init__(self, id, date, user_id, product_id, status_id, payment_method_id, is_paid, phone_number, address):
+    def __init__(self, id, date, user_id, status_id, payment_method_id, is_paid, phone_number, address):
         self.id = id
         self.date = date
         self.user_id = user_id
-        self.product_id = product_id
         self.status_id = status_id
         self.payment_method_id = payment_method_id
         self.is_paid = is_paid
@@ -109,19 +110,19 @@ class Order(db.Model):
         self.address = address
 
 
-class Raiting(db.Model):
+class Rating(db.Model):
     __tablename__ = "ratings"
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
     product_id = db.Column(db.Integer, ForeignKey('products.id'), nullable=False)
-    raiting = db.Column(db.Integer, nullable=False)
+    rating = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, id, user_id, product_id, raiting):
+    def __init__(self, id, user_id, product_id, rating):
         self.id = id
         self.user_id = user_id
         self.product_id = product_id
-        self.raiting = raiting
+        self.rating = rating
 
 
 class Favourite(db.Model):
@@ -155,31 +156,32 @@ class Size(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     product_id = db.Column(db.Integer, ForeignKey('products.id'), nullable=False)
     size = db.Column(db.Text, nullable=False)
-    available = db.Column(db.Integer, nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, id, product_id, size, available):
+    def __init__(self, id, product_id, size, quantity):
         self.id = id
         self.product_id = product_id
         self.size = size
-        self.available = available
+        self.quantity = quantity
 
 
 class OrderedProduct(db.Model):
-    __tablename__ = "orderedProducts"
+    __tablename__ = "ordered_products"
 
     id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.Integer, ForeignKey('orders.id'), nullable=False)
     product_id = db.Column(db.Integer, ForeignKey('products.id'), nullable=False)
+    product_price = db.Column(db.Float(5, 2), nullable=False)
 
-    def __init__(self, id, order_id, product_id):
+    def __init__(self, id, order_id, product_id, product_price):
         self.id = id
         self.order_id = order_id
         self.product_id = product_id
-
+        self.product_price = product_price
 
 
 class PaymentMethod(db.Model):
-    __tablename__ = "paymentMethods"
+    __tablename__ = "payment_methods"
 
     id = db.Column(db.Integer, primary_key=True)
     payment_method = db.Column(db.Text, nullable=False)
