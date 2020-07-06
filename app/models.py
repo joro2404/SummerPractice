@@ -39,17 +39,27 @@ class Category(db.Model):
         self.id = id
         self.name = name
 
+class Subcategory(db.Model):
+    __tablename__ = "subcategories"
+
+    id = db.Column(db.Integer, primary_key=True)
+    category_id = db.Column(db.Integer, ForeignKey('categories.id'), nullable=False)
+    subcategory = db.Column(db.Text, nullable=False)
+
+    def __init__(self, id, category_id, subcategory):
+        self.id = id
+        self.category_id = category_id
+        self.subcategory = subcategory
+
 
 class Status(db.Model):
     __tablename__ = "status"
     
     id = db.Column(db.Integer, primary_key=True)
-    statusCode = db.Column(db.String(10), unique=True, nullable=False)
     status = db.Column(db.String(128), unique=True, nullable=False)
 
-    def __init__(self, id, statusCode, status):
+    def __init__(self, id, status):
         self.id = id
-        self.statusCode = statusCode
         self.status = status
 
 
@@ -59,18 +69,19 @@ class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256), unique=True, nullable=False)
     price = db.Column(db.Float(5, 2), nullable=False)
-    available = db.Column(db.Integer, nullable=False)
+    brand_id = db.Column(db.Integer, ForeignKey('brands.id'), nullable=False)
     overallRaiting = db.Column(db.Float(1, 2), nullable=False)
     category_id = db.Column(db.Integer, ForeignKey('categories.id'), nullable=False)
-    #category = relationship('categories', back_populates="products")
+    gender = db.Column(db.Text, nullable=False)
 
-    def __init__(self, id, name, price, available, overallRaiting, category_id):
+    def __init__(self, id, name, price, brand_id, overallRaiting, category_id, gender):
         self.id = id
         self.name = name
         self.price = price
-        self.available = available
+        self.brand_id = brand_id
         self.overallRaiting = overallRaiting
         self.category_id = category_id
+        self.gender = gender
 
 
 class Order(db.Model):
@@ -80,14 +91,22 @@ class Order(db.Model):
     date = db.Column(db.Date, nullable=False)
     user_id = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
     product_id = db.Column(db.Integer, ForeignKey('products.id'), nullable=False)
-    status = db.Column(db.String(3), ForeignKey('status.statusCode'), nullable=False)
+    status_id = db.Column(db.Integer, ForeignKey('status.id'), nullable=False)
+    payment_method_id = db.Column(db.Integer, ForeignKey('paymentMethods.id'), nullable=False)
+    is_paid = db.Column(db.Boolean, nullable=False)
+    phone_number = db.Column(db.Text, nullable=False)
+    address = db.Column(db.Text, nullable=False)
 
-    def __init__(self, id, date, user_id, product_id, status):
+    def __init__(self, id, date, user_id, product_id, status_id, payment_method_id, is_paid, phone_number, address):
         self.id = id
         self.date = date
         self.user_id = user_id
         self.product_id = product_id
-        self.status = status
+        self.status_id = 
+        self.payment_method_id = payment_method_id
+        self.is_paid = is_paid
+        self.phone_number = phone_number
+        self.address = address
 
 
 class Raiting(db.Model):
@@ -122,4 +141,49 @@ class Picture(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     product_id = db.Column(db.Integer, ForeignKey('products.id'), nullable=False)
-    path = db.Column(db.Text, nullable=False) 
+    path = db.Column(db.Text, nullable=False)
+
+    def __init__(self, id, product_id, path):
+        self.id = id
+        self.product_id = product_id
+        self.path = path
+
+
+class Size(db.Model):
+    __tablename__ = "sizes"
+
+    id = db.Column(db.Integer, primary_key=True)
+    product_id = db.Column(db.Integer, ForeignKey('products.id'), nullable=False)
+    size = db.Column(db.Text, nullable=False)
+    available = db.Column(db.Integer, nullable=False)
+
+    def __init__(self, id, product_id, size, available):
+        self.id = id
+        self.product_id = product_id
+        self.size = size
+        self.available = available
+
+
+class OrderedProduct(db.Model):
+    __tablename__ = "orderedProducts"
+
+    id = db.Column(db.Integer, primary_key=True)
+    order_id = db.Column(db.Integer, ForeignKey('orders.id'), nullable=False)
+    product_id = db.Column(db.Integer, ForeignKey('products.id'), nullable=False)
+
+    def __init__(self, id, order_id, product_id):
+        self.id = id
+        self.order_id = order_id
+        self.product_id = product_id
+
+
+
+class PaymentMethod(db.Model):
+    __tablename__ = "paymentMethods"
+
+    id = db.Column(db.Integer, primary_key=True)
+    payment_method = db.Column(db.Text, nullable=False)
+
+    def __init__(self, id, payment_method):
+        self.id = id
+        self.payment_method = payment_method
