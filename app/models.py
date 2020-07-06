@@ -73,14 +73,16 @@ class Product(db.Model):
     brand_id = db.Column(db.Integer, ForeignKey('brands.id'), nullable=False)
     overall_raiting = db.Column(db.Float(1, 2), nullable=False)
     gender = db.Column(db.Text, nullable=False)
+    description = db.Column(db.Text, nullable=False)
 
-    def __init__(self, id, name, price, brand_id, overall_raiting, gender):
+    def __init__(self, id, name, price, brand_id, overall_raiting, gender, description):
         self.id = id
         self.name = name
         self.price = price
         self.brand_id = brand_id
         self.overall_raiting = overall_raiting
         self.gender = gender
+        self.description = description
 
 
 class Order(db.Model):
