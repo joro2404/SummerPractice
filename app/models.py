@@ -70,16 +70,16 @@ class Product(db.Model):
     name = db.Column(db.String(256), unique=True, nullable=False)
     price = db.Column(db.Float(5, 2), nullable=False)
     brand_id = db.Column(db.Integer, ForeignKey('brands.id'), nullable=False)
-    overallRaiting = db.Column(db.Float(1, 2), nullable=False)
+    overall_raiting = db.Column(db.Float(1, 2), nullable=False)
     category_id = db.Column(db.Integer, ForeignKey('categories.id'), nullable=False)
     gender = db.Column(db.Text, nullable=False)
 
-    def __init__(self, id, name, price, brand_id, overallRaiting, category_id, gender):
+    def __init__(self, id, name, price, brand_id, overall_raiting, category_id, gender):
         self.id = id
         self.name = name
         self.price = price
         self.brand_id = brand_id
-        self.overallRaiting = overallRaiting
+        self.overall_raiting = overall_raiting
         self.category_id = category_id
         self.gender = gender
 
