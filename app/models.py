@@ -172,12 +172,14 @@ class OrderedProduct(db.Model):
     order_id = db.Column(db.Integer, ForeignKey('orders.id'), nullable=False)
     product_id = db.Column(db.Integer, ForeignKey('products.id'), nullable=False)
     product_price = db.Column(db.Float(5, 2), nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, id, order_id, product_id, product_price):
+    def __init__(self, id, order_id, product_id, product_price, quantity):
         self.id = id
         self.order_id = order_id
         self.product_id = product_id
         self.product_price = product_price
+        self.quantity = quantity
 
 
 class PaymentMethod(db.Model):

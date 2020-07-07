@@ -31,21 +31,21 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="product-pic-zoom">
-                                <img class="product-big-img" src="img/product-single/product-1.jpg" alt="">
+                                <img class="product-big-img" src="{{ url_for('static', filename='img/product-single/product-1.jpg') }}" alt="">
                                 <div class="zoom-icon">
                                     <i class="fa fa-search-plus"></i>
                                 </div>
                             </div>
                             <div class="product-thumbs">
                                 <div class="product-thumbs-track ps-slider owl-carousel">
-                                    <div class="pt active" data-imgbigurl="img/product-single/product-1.jpg"><img
-                                            src="img/product-single/product-1.jpg" alt=""></div>
-                                    <div class="pt" data-imgbigurl="img/product-single/product-2.jpg"><img
-                                            src="img/product-single/product-2.jpg" alt=""></div>
-                                    <div class="pt" data-imgbigurl="img/product-single/product-3.jpg"><img
-                                            src="img/product-single/product-3.jpg" alt=""></div>
-                                    <div class="pt" data-imgbigurl="img/product-single/product-3.jpg"><img
-                                            src="img/product-single/product-3.jpg" alt=""></div>
+                                    <div class="pt active" data-imgbigurl="{{ url_for('static', filename='img/product-single/product-1.jpg') }}"><img
+                                            src="{{ url_for('static', filename='img/product-single/product-1.jpg') }}" alt=""></div>
+                                    <div class="pt" data-imgbigurl="{{ url_for('static', filename='img/product-single/product-2.jpg') }}"><img
+                                            src="{{ url_for('static', filename='img/product-single/product-2.jpg') }}" alt=""></div>
+                                    <div class="pt" data-imgbigurl="{{ url_for('static', filename='img/product-single/product-3.jpg') }}"><img
+                                            src="{{ url_for('static', filename='img/product-single/product-3.jpg') }}" alt=""></div>
+                                    <div class="pt" data-imgbigurl="{{ url_for('static', filename='img/product-single/product-3.jpg') }}"><img
+                                            src="{{ url_for('static', filename='img/product-single/product-3.jpg') }}" alt=""></div>
                                 </div>
                             </div>
                         </div>
@@ -65,27 +65,10 @@
                                     <span>(5)</span>
                                 </div>
                                 <div class="pd-desc">
-                                    <p>Lorem ipsum dolor sit amet, consectetur ing elit, sed do eiusmod tempor sum dolor
-                                        sit amet, consectetur adipisicing elit, sed do mod tempor</p>
+                                    <p>{{ product.description }}</p>
                                     <h4>${{ '%0.2f'| format(product.price|float) }} <span>{{ '%0.2f'| format(discounted_price|float) }}</span></h4>
                                 </div>
-                                <div class="pd-color">
-                                    <h6>Color</h6>
-                                    <div class="pd-color-choose">
-                                        <div class="cc-item">
-                                            <input type="radio" id="cc-black">
-                                            <label for="cc-black"></label>
-                                        </div>
-                                        <div class="cc-item">
-                                            <input type="radio" id="cc-yellow">
-                                            <label for="cc-yellow" class="cc-yellow"></label>
-                                        </div>
-                                        <div class="cc-item">
-                                            <input type="radio" id="cc-violet">
-                                            <label for="cc-violet" class="cc-violet"></label>
-                                        </div>
-                                    </div>
-                                </div>
+                                
                                 <div class="pd-size-choose">
                                     <div class="sc-item">
                                         <input type="radio" id="sm-size">
@@ -111,8 +94,8 @@
                                     <a href="#" class="primary-btn pd-cart">Add To Cart</a>
                                 </div>
                                 <ul class="pd-tags">
-                                    <li><span>CATEGORIES</span>: More Accessories, Wallets & Cases</li>
-                                    <li><span>TAGS</span>: Clothing, T-shirt, Woman</li>
+                                    <li><span>FOR</span>: {{ product.gender }}</li>
+                                    <li><span>TAGS</span>: {{ tags }}</li>
                                 </ul>
                             </div>
                         </div>
@@ -137,7 +120,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="product-item">
                         <div class="pi-pic">
-                            <img src="img/products/women-1.jpg" alt="">
+                            <img src="{{ url_for('static', filename='img/products/women-1.jpg') }}" alt="">
                             <div class="sale">Sale</div>
                             <div class="icon">
                                 <i class="icon_heart_alt"></i>
@@ -163,7 +146,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="product-item">
                         <div class="pi-pic">
-                            <img src="img/products/women-2.jpg" alt="">
+                            <img src="{{ url_for('static', filename='img/products/women-2.jpg') }}" alt="">
                             <div class="icon">
                                 <i class="icon_heart_alt"></i>
                             </div>
@@ -187,7 +170,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="product-item">
                         <div class="pi-pic">
-                            <img src="img/products/women-3.jpg" alt="">
+                            <img src="{{ url_for('static', filename='img/products/women-3.jpg') }}" alt="">
                             <div class="icon">
                                 <i class="icon_heart_alt"></i>
                             </div>
@@ -211,7 +194,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="product-item">
                         <div class="pi-pic">
-                            <img src="img/products/women-4.jpg" alt="">
+                            <img src="{{ url_for('static', filename='img/products/women-4.jpg') }}" alt="">
                             <div class="icon">
                                 <i class="icon_heart_alt"></i>
                             </div>
