@@ -71,4 +71,18 @@ def view_product(id):
     product = Product.query.get(id)
     discounted_price = product.price * decimal.Decimal(1.33)
     brand = Brand.query.get(product.brand_id)
-    return render_template('view_product.html', product=product, discounted_price=discounted_price, brand=brand)
+    tags = db.session.query(ProductTags).filter(ProductTags.product_id == id)
+
+    tag_names = []
+    for tag in tags:
+        var = Tag.query.get(tag.tag_id)
+        tag_names.append(var.tag)
+    
+    tagstr = ""
+    for i in range(0, len(tag_names)):
+        tagstr += str(tag_names[i])
+        if i != len(tag_names) - 1:
+            tagstr += ", "
+
+    
+    return render_template('view_product.html', product=product, discounted_price=discounted_price, brand=brand, tags=tagstr)
