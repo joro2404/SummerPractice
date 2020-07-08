@@ -94,7 +94,7 @@ class Product(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text, unique=True, nullable=False)
-    price = db.Column(db.Float(5, 2), nullable=False)
+    price = db.Column(db.Numeric(10,2), nullable=False)
     brand_id = db.Column(db.Integer, ForeignKey('brands.id'), nullable=False)
     overall_rating = db.Column(db.Float(1, 2), nullable=False)
     gender = db.Column(db.Text, nullable=False)
@@ -194,7 +194,7 @@ class OrderedProduct(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.Integer, ForeignKey('orders.id'), nullable=False)
     product_id = db.Column(db.Integer, ForeignKey('products.id'), nullable=False)
-    product_price = db.Column(db.Float(5, 2), nullable=False)
+    product_price = db.Column(db.Numeric(10,2), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
 
     def __init__(self, id, order_id, product_id, product_price, quantity):
