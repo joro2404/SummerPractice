@@ -167,7 +167,9 @@
                                 <li><a href="#">Kid's</a></li>
                             </ul>
                         </li>
-                        <li><a href="./contact.html">Contact</a></li>
+                        {% if current_user.is_authenticated %}
+                        <li><a href="/profile">Profile</a></li>
+                        {% endif %}
                         <li><a href="#">Pages</a>
                             <ul class="dropdown">
                                 <li><a href="./blog-details.html">Blog Details</a></li>

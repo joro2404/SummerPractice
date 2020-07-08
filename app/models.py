@@ -18,17 +18,40 @@ class User(UserMixin, db.Model):
     is_admin = db.Column(db.Boolean, nullable=False, default=False)
     is_confirmed = db.Column(db.Boolean, nullable=False, default=False)
     phone_number = db.Column(db.Text, nullable=True)
-    address = db.Column(db.Text, nullable=True)
 
-    def __init__(self, id, name, email, password, is_admin, is_confirmed, phone_number, address):
+    def __init__(self, id, username, first_name, last_name, email, password, is_admin, is_confirmed, phone_number):
         self.id = id
-        self.name = name
+        self.username = username
+        self.first_name = first_name
+        self.last_name = last_name
         self.email = email
         self.password = password
         self.is_admin = is_admin
-        self.is_confirmed= is_confirmed
+        self.is_confirmed = is_confirmed
         self.phone_number = phone_number 
-        self.address = address
+
+
+class Address(db.Model):
+    __tablename__ = "addresses"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
+    receiver_name = db.Column(db.Text, nullable=False)
+    receiver_phone = db.Column(db.Text, nullable=False)
+    city = db.Column(db.Text, nullable=False)
+    street = db.Column(db.Text, nullable=False)
+    building = db.Column(db.Text, nullable=False)
+    details = db.Column(db.Text, nullable=False)
+
+    def __init__(self, id, user_id, receiver_name, receiver_phone, city, street, building, details):
+        self.id = id
+        self.user_id = user_id
+        self.receiver_name = receiver_name
+        self.receiver_phone = receiver_phone
+        self.city = city
+        self.street = street
+        self.building = building
+        self.details = details
 
 
 class Tag(db.Model):
