@@ -3894,6 +3894,11 @@ ol {
 	color: #6B6B6B;
 }
 
+a:not([href]):hover {
+	cursor: pointer;
+	color: white;
+}
+
 /* ------------------------------ Responsive Media Styles ---------------------------- */
 
 @media only screen and (min-width: 1200px) and (max-width: 1920px) {
