@@ -38,20 +38,14 @@ class Address(db.Model):
     user_id = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
     receiver_name = db.Column(db.Text, nullable=False)
     receiver_phone = db.Column(db.Text, nullable=False)
-    city = db.Column(db.Text, nullable=False)
-    street = db.Column(db.Text, nullable=False)
-    building = db.Column(db.Text, nullable=False)
-    details = db.Column(db.Text, nullable=False)
+    address = db.Column(db.Text, nullable=False)
 
-    def __init__(self, id, user_id, receiver_name, receiver_phone, city, street, building, details):
+    def __init__(self, id, user_id, receiver_name, receiver_phone, address):
         self.id = id
         self.user_id = user_id
         self.receiver_name = receiver_name
         self.receiver_phone = receiver_phone
-        self.city = city
-        self.street = street
-        self.building = building
-        self.details = details
+        self.address = address
 
 
 class Tag(db.Model):
@@ -97,7 +91,7 @@ class Product(db.Model):
     price = db.Column(db.Numeric(10,2), nullable=False)
     brand_id = db.Column(db.Integer, ForeignKey('brands.id'), nullable=False)
     overall_rating = db.Column(db.Float(1, 2), nullable=False)
-    gender = db.Column(db.Text, nullable=False)
+    gender_id = db.Column(db.Integer, ForeignKey('genders.id'), nullable=False)
     description = db.Column(db.Text, nullable=False)
     quantity = 0
 
@@ -111,6 +105,17 @@ class Product(db.Model):
         self.description = description
 
 
+class Gender(db.Model):
+    __tablename__ = "genders"
+
+    id = db.Column(db.Integer, primary_key=True)
+    gender = db.Column(db.Text, nullable=False)
+
+    def __init__(self, id, gender):
+        self.id = id
+        self.gender = gender
+
+
 class Order(db.Model):
     __tablename__ = "orders"
 
@@ -121,9 +126,9 @@ class Order(db.Model):
     payment_method_id = db.Column(db.Integer, ForeignKey('payment_methods.id'), nullable=False)
     is_paid = db.Column(db.Boolean, nullable=False)
     phone_number = db.Column(db.Text, nullable=False)
-    address = db.Column(db.Text, nullable=False)
+    address_id = db.Column(db.Integer, ForeignKey('addresses.id'), nullable=False)
 
-    def __init__(self, id, date, user_id, status_id, payment_method_id, is_paid, phone_number, address):
+    def __init__(self, id, date, user_id, status_id, payment_method_id, is_paid, phone_number, address_id):
         self.id = id
         self.date = date
         self.user_id = user_id
@@ -131,7 +136,7 @@ class Order(db.Model):
         self.payment_method_id = payment_method_id
         self.is_paid = is_paid
         self.phone_number = phone_number
-        self.address = address
+        self.address_id = address_id
 
 
 class Rating(db.Model):
