@@ -15,23 +15,27 @@ def cart():
 
     total_price = session.get('all_total_price')
     cart_items = session.get('cart_item')
-    cart_ids = list(cart_items.keys())
-
-    for i in range(len(cart_ids)):
-        cart_ids[i] = int(cart_ids[i])
-
-    print(cart_ids)
-
     product_list = []
 
-    for id in cart_ids:
-        product = Product.query.get(id)
-        product.quantity = cart_items[str(id)]['quantity']
-        product_list.append(product)
-    
-    print(product.quantity)
+    if cart_items:
+        cart_ids = list(cart_items.keys())
 
-    return render_template('cart.html', products=product_list, total_price=total_price)
+        for i in range(len(cart_ids)):
+            cart_ids[i] = int(cart_ids[i])
+
+        print(cart_ids)
+
+        for id in cart_ids:
+            product = Product.query.get(id)
+            product.quantity = cart_items[str(id)]['quantity']
+            product_list.append(product)
+        
+        print(product.quantity)
+
+        return render_template('cart.html', products=product_list, total_price=total_price)
+
+    else : 
+        return render_template('cart.html', products=product_list, total_price=0)
 
 
 
@@ -101,34 +105,33 @@ def empty_cart():
 	except Exception as e:
 		print(e)
 
-@pay.route('/delete/<string:id>')
+@pay.route('/delete/<int:id>')
 def delete_product(id):
-	try:
-		all_total_price = 0
-		all_total_quantity = 0
-		session.modified = True
-		
-		for item in session['cart_item'].items():
-			if item[0] == id:				
-				session['cart_item'].pop(item[0], None)
-				if 'cart_item' in session:
-					for key, value in session['cart_item'].items():
-						individual_quantity = int(session['cart_item'][key]['quantity'])
-						individual_price = float(session['cart_item'][key]['total_price'])
-						all_total_quantity = all_total_quantity + individual_quantity
-						all_total_price = all_total_price + individual_price
-				break
-		
-		if all_total_quantity == 0:
-			session.clear()
-		else:
-			session['all_total_quantity'] = all_total_quantity
-			session['all_total_price'] = all_total_price
-		
-		#return redirect('/')
-		return redirect(url_for('.products'))
-	except Exception as e:
-		print(e)
+
+    all_total_price = 0
+    all_total_quantity = 0
+    session.modified = True
+    
+    for item in session['cart_item'].items():
+        if item[0] == str(id):				
+            session['cart_item'].pop(item[0], None)
+            if 'cart_item' in session:
+                for key, value in session['cart_item'].items():
+                    individual_quantity = int(session['cart_item'][key]['quantity'])
+                    individual_price = float(session['cart_item'][key]['total_price'])
+                    all_total_quantity = all_total_quantity + individual_quantity
+                    all_total_price = all_total_price + individual_price
+            break
+    
+    if all_total_quantity == 0:
+        session.clear()
+    else:
+        session['all_total_quantity'] = all_total_quantity
+        session['all_total_price'] = all_total_price
+    
+    #return redirect('/')
+    return redirect(url_for('pay.cart'))
+	
 		
 def array_merge( first_array , second_array ):
 	if isinstance( first_array , list ) and isinstance( second_array , list ):

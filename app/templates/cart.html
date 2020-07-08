@@ -40,6 +40,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                
                                 {% for product in products %}
                                     <tr>
                                         <td class="cart-pic first-row"><img src="{{ url_for('static', filename='img/cart-page/product-1.jpg') }}" alt=""></td>
@@ -55,11 +56,14 @@
                                             </div>
                                         </td>
                                         <td class="total-price first-row">${{ '%0.2f'| format(product.price|float * product.quantity) }}</td>
-                                        <td class="close-td first-row"><i class="ti-close"></i></td>
+                                        <td class="close-td first-row"><a href="/delete/{{ product.id }}" class="remove-product"><i class="ti-close"></i></a></td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
+                        {% if total_price == 0%}
+                            <h3 style = "text-align: center; margin-top:50px"> Your Cart is Empty </h3>
+                        {% endif %}
                     </div>
                     <div class="row">
                         <div class="col-lg-4">
