@@ -26,7 +26,7 @@ def view_catalog():
 def view_product(id):
 
     product = Product.query.get(id)
-    discounted_price = product.price * decimal.Decimal(1.33)
+    discounted_price = decimal.Decimal(product.price) * decimal.Decimal(1.33)
     brand = Brand.query.get(product.brand_id)
     tags = db.session.query(ProductTags).filter(ProductTags.product_id == id)
 
