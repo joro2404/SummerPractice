@@ -3908,6 +3908,23 @@ a:not([href]):hover {
 	color: white;
 }
 
+.fw-link {
+	color: gray;
+	text-decoration: none;
+}
+
+.fw-link:hover {
+	color: rgb(56, 55, 55);
+}
+
+.fw-active {
+	color: black;
+}
+
+.orders-table {
+	width: 100%;
+}
+
 /* ------------------------------ Responsive Media Styles ---------------------------- */
 
 @media only screen and (min-width: 1200px) and (max-width: 1920px) {

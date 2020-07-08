@@ -55,7 +55,9 @@ def register():
 
         elif request.method == 'POST':
             email = request.form.get('email')
-            name = request.form.get('name')
+            username = request.form.get('username')
+            first_name = request.form.get('first_name')
+            last_name = request.form.get('last_name')
             password = request.form.get('password')
             confirm_password = request.form.get('password_confirm')
 
@@ -69,7 +71,7 @@ def register():
                 flash('Password missmatch!')
                 return redirect(url_for('auth.register'))
 
-            new_user = User(id=None, name=name, email=email, password=generate_password_hash(password, method='sha256'), is_admin=False, is_confirmed=False, phone_number=None, address=None)
+            new_user = User(id=None, username=username, first_name=first_name, last_name=last_name, email=email, password=generate_password_hash(password, method='sha256'), is_admin=False, is_confirmed=False, phone_number=None)
 
             db.session.add(new_user)
             db.session.commit()

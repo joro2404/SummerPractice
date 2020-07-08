@@ -1,5 +1,3 @@
-// document.getElementsByClassName('product-price')[0].innerText;
-// document.getElementsByClassName('product-price')[0].getAttribute('price');
 function filterBrand() {
     let brands = document.getElementsByClassName('bc-item');
     let brands_products = document.getElementsByClassName('brand-name');
