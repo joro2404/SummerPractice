@@ -14,9 +14,24 @@ def cart():
     print(session.get("cart_item"))
 
     total_price = session.get('all_total_price')
+    cart_items = session.get('cart_item')
+    cart_ids = list(cart_items.keys())
 
+    for i in range(len(cart_ids)):
+        cart_ids[i] = int(cart_ids[i])
+
+    print(cart_ids)
+
+    product_list = []
+
+    for id in cart_ids:
+        product = Product.query.get(id)
+        product.quantity = cart_items[str(id)]['quantity']
+        product_list.append(product)
     
-    return render_template('cart.html', total_price=total_price)
+    print(product.quantity)
+
+    return render_template('cart.html', products=product_list, total_price=total_price)
 
 
 

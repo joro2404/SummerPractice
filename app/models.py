@@ -76,6 +76,7 @@ class Product(db.Model):
     overall_rating = db.Column(db.Float(1, 2), nullable=False)
     gender = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text, nullable=False)
+    quantity = 0
 
     def __init__(self, id, name, price, brand_id, overall_rating, gender, description):
         self.id = id
