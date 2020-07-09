@@ -1,0 +1,105 @@
+{% extends "layout.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <!-- <h1>Index</h1>
+    <p>Welcome on my awesome homepage, {{ current_user.username }}!</p> -->
+    <!-- Breadcrumb Section Begin -->
+    <div class="breacrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text">
+                        <a href="/"><i class="fa fa-home"></i> Home</a>
+                        <span>Profile</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Section Begin -->
+
+    <section class="product-shop spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-8 order-2 order-lg-1 produts-sidebar-filter">
+                    <div class="filter-widget">
+                        <h4 class="fw-title"><a class="fw-link" href="/profile">My profile ❯</a></h4>
+                    </div>
+                    <div class="filter-widget">
+                        <h4 class="fw-title"><a class="fw-link" href="/profile/my_orders">My orders ❯</a></h4>
+                    </div>
+                    <div class="filter-widget">
+                        <h4 class="fw-title"><a class="fw-link" href="/profile/my_addresses">My addresses ❯</a></h4>
+                    </div>
+                    <div class="filter-widget">
+                        <h4 class="fw-title"><a class="fw-link fw-active" href="/profile/settings">Settings ❯</a></h4>
+                    </div>
+                </div>
+
+                <div class="col-lg-9 order-1 order-lg-2">
+                    <h4 id="personal-info">Personal information</h4>
+                    <br>
+                    <div class="col-lg-4">
+                        <form action="/profile/settings/change_name" method="POST">
+                            <div class="form-group">
+                                <label for="first-name">First name*</label>
+                                <input type="text" class="form-control" name="first-name" placeholder="First name" value="{{ current_user.first_name }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="last-name">Last name*</label>
+                                <input type="text" class="form-control" name="last-name" placeholder="Last name" value="{{ current_user.last_name }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone*</label>
+                                {% if current_user.phone_number %}
+                                <input type="tel" pattern="^[0-9\-\+]{9,15}$" class="form-control" name="phone" placeholder="Phone" value="{{ current_user.phone_number }}">
+                                {% else %}
+                                <input type="tel" pattern="^[0-9\-\+]{9,15}$" class="form-control" name="phone" placeholder="Phone">
+                                {% endif %}
+                            </div>
+                            <button type="submit" class="orders-btn btn">Save</button>
+                        </form>
+                    </div>
+
+                    <br>
+                    <br>
+
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">
+                                {{ message }}
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <h4 id="change-password">Change passsword</h4>
+                    <br>
+                    <div class="col-lg-4">
+                        <form action="/profile/settings/change_password" method="POST">
+                            <div class="form-group">
+                                <label for="old-password">Old password*</label>
+                                <input type="password" class="form-control" name="old-password" placeholder="Old passsword">
+                            </div>
+                            <div class="form-group">
+                                <label for="new-password">New password*</label>
+                                <input type="password" class="form-control" name="new-password" placeholder="New passsword">
+                            </div>
+                            <div class="form-group">
+                                <label for="new-password-confirm">Confirm new password*</label>
+                                <input type="password" class="form-control" name="new-password-confirm" placeholder="Confirm new passsword">
+                            </div>
+                            <button type="submit" class="orders-btn btn">Save</button>
+                        </form>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+    </section>
+{% endblock %}

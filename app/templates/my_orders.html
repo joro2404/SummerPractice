@@ -26,10 +26,10 @@
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-sm-8 order-2 order-lg-1 produts-sidebar-filter">
                     <div class="filter-widget">
-                        <h4 class="fw-title"><a class="fw-link fw-active" href="/profile">My profile ❯</a></h4>
+                        <h4 class="fw-title"><a class="fw-link" href="/profile">My profile ❯</a></h4>
                     </div>
                     <div class="filter-widget">
-                        <h4 class="fw-title"><a class="fw-link" href="/profile/my_orders">My orders ❯</a></h4>
+                        <h4 class="fw-title"><a class="fw-link fw-active" href="/profile/my_orders">My orders ❯</a></h4>
                     </div>
                     <div class="filter-widget">
                         <h4 class="fw-title"><a class="fw-link" href="/profile/my_addresses">My addresses ❯</a></h4>
@@ -42,7 +42,6 @@
                 <div class="col-lg-9 order-1 order-lg-2">
                     <div class="profile-list">
                         <div class="row">
-                            <h4>Latest Orders</h4>
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
@@ -82,23 +81,6 @@
                                     {% endfor %}
                                 </tbody>
                             </table>
-                            <a href="/profile/my_orders" class="text-right orders-btn">All orders</a>
-                            <div class="row">
-                                <div class="col">
-                                    <h4>Main address</h4>
-                                    <span>{{ address.address }}</span>
-                                </div>
-                                <div class="col">
-                                    <h4>Settings</h4>
-                                    <a href="/profile/settings#personal-information">Personal information</a><br>
-                                    <a href="/profile/settings#change-password">Change password</a><br>
-                                    <a href="">Change email</a>
-                                </div>
-                                <div class="col">
-                                    <h4>Contact</h4>
-                                    <span>To contact us you can write us an email @ support@online-shop.com</span>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

@@ -3921,8 +3921,42 @@ a:not([href]):hover {
 	color: black;
 }
 
-.orders-table {
-	width: 100%;
+.orders-btn {
+	font-size: 14px;
+	color: #ffffff;
+	font-weight: 700;
+	background: #e7ab3c;
+	padding: 7px 20px 5px;
+	border-radius: 2px;
+	display: inline-block;
+	text-transform: uppercase;
+	margin-bottom: 10px;
+}
+
+.address-label {
+	color: gray;
+	margin-top: 15px;
+}
+
+.delete-btn {
+	background: rgb(206, 38, 38);
+}
+
+.address-card {
+	background: rgb(216, 216, 216);
+	padding: 15px;
+	border-radius: .3em;
+	border: 2px solid white;
+}
+
+.address-card-add {
+	padding: 15px;
+	border-radius: .3em;
+	border: 2px solid white;
+}
+
+.row dl {
+	width: 33%;
 }
 
 /* ------------------------------ Responsive Media Styles ---------------------------- */
