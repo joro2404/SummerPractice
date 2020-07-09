@@ -50,4 +50,7 @@ def create_app():
     from .products import products as products_blueprint
     app.register_blueprint(products_blueprint)
 
+    from .profile import profile as profile_blueprint
+    app.register_blueprint(profile_blueprint)
+
     return app

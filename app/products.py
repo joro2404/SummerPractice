@@ -15,7 +15,18 @@ def view_catalog():
     brands = Brand.query.all()
     tags = Tag.query.all()
     
-    gender = request.args.get('gender')
+    gender_form = request.args.get('gender')
+    gender = None
+
+    if (gender_form == 'Men'):
+        gender = 1
+
+    elif (gender_form == 'Women'):
+        gender = 2
+
+    elif (gender_form == 'Unisex'):
+        gender = 3
+
     tag = request.args.get('tags')
 
     if (tag == None and gender == None):
@@ -38,7 +49,7 @@ def view_catalog():
 
 
     elif (tag == None and gender != None):    
-        products = Product.query.filter_by(gender=gender).all()
+        products = Product.query.filter_by(gender_id=gender).all()
 
         if (products):
             list_of_prices = [product.price for product in products]
@@ -50,7 +61,7 @@ def view_catalog():
             .join(ProductTags, Product.id == ProductTags.product_id) \
             .join(Tag, ProductTags.tag_id == Tag.id) \
             .filter(Tag.tag == tag) \
-            .filter(Product.gender == gender) \
+            .filter(Product.gender_id == gender) \
             .all()
         
         if (products):

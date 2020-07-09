@@ -15,7 +15,7 @@ serializer = URLSafeTimedSerializer(secret_key)
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        flash('You are already logged in!')
+        flash('You are already logged in!', 'danger')
         return redirect(url_for('main.index'))
 
     else:
@@ -30,11 +30,11 @@ def login():
             user = User.query.filter_by(email=email).first()
             
             if not user or not check_password_hash(user.password, password):
-                flash('Please check your login credentials!')
+                flash('Please check your login credentials!', 'danger')
                 return redirect(url_for('auth.login'))
                 
             if not user.is_confirmed:
-                flash('Please confirm your email!')
+                flash('Please confirm your email!', 'warning')
                 return redirect(url_for('auth.login'))
 
 
@@ -46,7 +46,7 @@ def login():
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        flash('You are logged in!')
+        flash('You are logged in!', 'danger')
         return redirect(url_for('main.index'))
 
     else:
@@ -64,11 +64,11 @@ def register():
             user = User.query.filter_by(email=email).first()
 
             if user:
-                flash('Email address already registered!')
+                flash('Email address already registered!', 'danger')
                 return redirect(url_for('auth.register'))
 
             if password != confirm_password:
-                flash('Password missmatch!')
+                flash('Password missmatch!', 'danger')
                 return redirect(url_for('auth.register'))
 
             new_user = User(id=None, username=username, first_name=first_name, last_name=last_name, email=email, password=generate_password_hash(password, method='sha256'), is_admin=False, is_confirmed=False, phone_number=None)
@@ -86,7 +86,7 @@ def register():
 
             mail.send(msg)
 
-            flash('Please confirm your email!')
+            flash('Success! Please confirm your email!', 'success')
 
             return redirect(url_for('auth.login'))
 
@@ -96,10 +96,10 @@ def confirm_email(token):
     try:
         email = serializer.loads(token, salt='email-confirm', max_age=3600)
     except SignatureExpired:
-        flash('Token expired!')
+        flash('Token expired!', 'danger')
         return redirect(url_for('auth.register'))
 
-    flash('Success. Now you can login!')
+    flash('Success. Now you can login!', 'success')
 
     db.session.query(User).filter_by(email=email).update({ 'is_confirmed':True })
     db.session.commit()

@@ -4,7 +4,6 @@
     {{ super() }}
 {% endblock %}
 {% block content %}
-    
     <!-- Login Section Begin -->
     <div class="register-login-section spad">
         <div class="container">
@@ -12,13 +11,15 @@
                 <div class="col-lg-6 offset-lg-3">
                     <div class="login-form">
                         <h2>Login</h2>
-                        <div class="warn-message">
-                        {% with messages = get_flashed_messages() %}
+                        {% with messages = get_flashed_messages(with_categories=true) %}
                             {% if messages %}
-                                {{ messages[0] }}
+                                {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">
+                                    {{ message }}
+                                </div>
+                                {% endfor %}
                             {% endif %}
                         {% endwith %}
-                        </div>
                         <form action="/login" method="post">
                             <div class="group-input">
                                 <label for="email">Email address *</label>

@@ -4,14 +4,6 @@
     {{ super() }}
 {% endblock %}
 {% block content %}
-    <!-- <h1>Register</h1> -->
-    <!-- <form action="/register" method="post">
-        <input type="text" name="name" placeholder="name"><br>
-        <input type="email" name="email" placeholder="email"><br>
-        <input type="password" name="password" placeholder="password"><br>
-        <input type="password" name="password_confirm" placeholder="confirm password"><br>
-        <input type="submit" value="Submit"><br>
-    </form> -->
     <!-- Register Section Begin -->
     <div class="register-login-section spad">
         <div class="container">
@@ -20,9 +12,13 @@
                     <div class="register-form">
                         <h2>Register</h2>
                         <div class="warn-message">
-                        {% with messages = get_flashed_messages() %}
+                        {% with messages = get_flashed_messages(with_categories=true) %}
                             {% if messages %}
-                                {{ messages[0] }}
+                                {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">
+                                    {{ message }}
+                                </div>
+                                {% endfor %}
                             {% endif %}
                         {% endwith %}
                         </div>
