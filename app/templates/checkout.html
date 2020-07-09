@@ -33,41 +33,19 @@
                         </div>
                         <h4>Biiling Details</h4>
                         <div class="row">
-                            <div class="col-lg-6">
-                                <label for="fir">First Name<span>*</span></label>
-                                <input type="text" id="fir">
-                            </div>
-                            <div class="col-lg-6">
-                                <label for="last">Last Name<span>*</span></label>
-                                <input type="text" id="last">
-                            </div>
                             <div class="col-lg-12">
-                                <label for="cun-name">Company Name</label>
+                                <label for="cun-name">Reciever Name</label>
                                 <input type="text" id="cun-name">
                             </div>
+                            
                             <div class="col-lg-12">
-                                <label for="cun">Country<span>*</span></label>
-                                <input type="text" id="cun">
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="street">Street Address<span>*</span></label>
+                                <label for="street">Address</label>
                                 <input type="text" id="street" class="street-first">
-                                <input type="text">
+                                
                             </div>
+    
                             <div class="col-lg-12">
-                                <label for="zip">Postcode / ZIP (optional)</label>
-                                <input type="text" id="zip">
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="town">Town / City<span>*</span></label>
-                                <input type="text" id="town">
-                            </div>
-                            <div class="col-lg-6">
-                                <label for="email">Email Address<span>*</span></label>
-                                <input type="text" id="email">
-                            </div>
-                            <div class="col-lg-6">
-                                <label for="phone">Phone<span>*</span></label>
+                                <label for="phone">Phone</label>
                                 <input type="text" id="phone">
                             </div>
                             
@@ -82,12 +60,12 @@
                             <div class="order-total">
                                 <ul class="order-table">
                                     <li>Product <span>Total</span></li>
-                                    <li class="fw-normal">Combination x 1 <span>$60.00</span></li>
-                                    <li class="fw-normal">Combination x 1 <span>$60.00</span></li>
-                                    <li class="fw-normal">Combination x 1 <span>$120.00</span></li>
-                                    <li class="fw-normal">Subtotal <span>$240.00</span></li>
+                                    {% for product in products %}
+                                    <li class="fw-normal">{{ product.name }} x {{ product.quantity }} <span>${{ '%0.2f'| format(product.price|float) }}</span></li>
+                                    {% endfor %}
+                                    <li class="fw-normal">Subtotal <span>${{ total_price }}</span></li>
                                     <li class="fw-normal">Shipping <span>$24.00</span></li>
-                                    <li class="total-price">Total <span>$264.00</span></li>
+                                    <li class="total-price">Total <span>${{ '%0.2f'| format(total_price|float + 24) }}</span></li>
                                 </ul>
                                 
                                 <div class="order-btn">

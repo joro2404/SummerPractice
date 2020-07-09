@@ -23,14 +23,14 @@ def cart():
         for i in range(len(cart_ids)):
             cart_ids[i] = int(cart_ids[i])
 
-        print(cart_ids)
+        #print(cart_ids)
 
         for id in cart_ids:
             product = Product.query.get(id)
             product.quantity = cart_items[str(id)]['quantity']
             product_list.append(product)
         
-        print(product.quantity)
+        #print(product.quantity)
 
         return render_template('cart.html', products=product_list, total_price=total_price)
 
@@ -38,10 +38,32 @@ def cart():
         return render_template('cart.html', products=product_list, total_price=0)
 
 
-
+@login_required
 @pay.route('/checkout')
 def checkout():
-    return render_template('checkout.html')
+
+    total_price = session.get('all_total_price')
+    cart_items = session.get('cart_item')
+    product_list = []
+
+    if cart_items:
+        cart_ids = list(cart_items.keys())
+
+        for i in range(len(cart_ids)):
+            cart_ids[i] = int(cart_ids[i])
+
+        for id in cart_ids:
+            product = Product.query.get(id)
+            product.quantity = cart_items[str(id)]['quantity']
+            product_list.append(product)
+        
+
+        return render_template('checkout.html', products=product_list, total_price=total_price)
+
+
+    else : 
+        return render_template('checkout.html', products=product_list, total_price=0)
+
 
 
 		
@@ -99,12 +121,13 @@ def add_product_to_cart(id):
 		
 @pay.route('/empty')
 def empty_cart():
-	try:
-		session.clear()
-		return redirect(url_for('products.view_catalog'))
-	except Exception as e:
-		print(e)
+	
+    session.clear()
+    return redirect(url_for('products.view_catalog'))
 
+
+
+	
 @pay.route('/delete/<int:id>')
 def delete_product(id):
 
@@ -129,7 +152,6 @@ def delete_product(id):
         session['all_total_quantity'] = all_total_quantity
         session['all_total_price'] = all_total_price
     
-    #return redirect('/')
     return redirect(url_for('pay.cart'))
 	
 		

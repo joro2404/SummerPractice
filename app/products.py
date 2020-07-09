@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from . import db
 from sqlalchemy.sql import func
-from .models import Product, Brand, Tag, ProductTags
+from .models import Product, Brand, Tag, ProductTags, Gender
 import decimal
 
 
@@ -72,6 +72,7 @@ def view_product(id):
     discounted_price = decimal.Decimal(product.price) * decimal.Decimal(1.33)
     brand = Brand.query.get(product.brand_id)
     tags = db.session.query(ProductTags).filter(ProductTags.product_id == id)
+    gender = Gender.query.get(product.gender_id)
 
     tag_names = []
     for tag in tags:
@@ -85,4 +86,4 @@ def view_product(id):
             tagstr += ", "
 
     
-    return render_template('view_product.html', product=product, discounted_price=discounted_price, brand=brand, tags=tagstr)
+    return render_template('view_product.html', product=product, discounted_price=discounted_price, brand=brand, tags=tagstr, gender=gender.gender)
