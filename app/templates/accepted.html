@@ -24,13 +24,13 @@
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-sm-8 order-2 order-lg-1 produts-sidebar-filter">
                     <div class="filter-widget">
-                        <h4 class="fw-title"><a class="fw-link fw-active" href="/admin">All Orders ❯</a></h4>
+                        <h4 class="fw-title"><a class="fw-link" href="/admin">All Orders ❯</a></h4>
                     </div>
                     <div class="filter-widget">
                         <h4 class="fw-title"><a class="fw-link" href="/admin/queue">Queue ❯</a></h4>
                     </div>
                     <div class="filter-widget">
-                        <h4 class="fw-title"><a class="fw-link" href="/admin/accepted">Accepted ❯</a></h4>
+                        <h4 class="fw-title"><a class="fw-link fw-active" href="/admin/accepted">Accepted ❯</a></h4>
                     </div>
                     <div class="filter-widget">
                         <h4 class="fw-title"><a class="fw-link" href="#">Add Product ❯</a></h4>
@@ -46,7 +46,7 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>User Id</th>
+                                        <th>Finish Order</th>
                                         <th>Order</th>
                                         <th>Status</th>
                                         <th>Price</th>
@@ -56,7 +56,7 @@
                                 <tbody>
                                     {% for order in orders %}
                                     <tr>
-                                        <td>{{ order.user_id }}</td>
+                                        <td><a style="color: black;"href="/admin/finish_order/{{ order.id }}">Send</a></td>
                                         <td>
                                             <a style="color: black;"href="#">
                                             {% for order_product in orders_products[loop.index - 1] %}

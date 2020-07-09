@@ -127,6 +127,7 @@ class Order(db.Model):
     is_paid = db.Column(db.Boolean, nullable=False)
     phone_number = db.Column(db.Text, nullable=False)
     address_id = db.Column(db.Integer, ForeignKey('addresses.id'), nullable=False)
+    admin_id = db.Column(db.Integer, ForeignKey('users.id'), nullable=True)
 
     def __init__(self, id, date, user_id, status_id, payment_method_id, is_paid, phone_number, address_id):
         self.id = id
