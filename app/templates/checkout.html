@@ -25,36 +25,32 @@
     <!-- Shopping Cart Section Begin -->
     <section class="checkout-section spad">
         <div class="container">
-            <form action="#" class="checkout-form">
+            <form method="post" action="/checkout/order" class="checkout-form">
                 <div class="row">
                     <div class="col-lg-6">
-                        <div class="checkout-content">
-                            <a href="#" class="content-btn">Click Here To Login</a>
-                        </div>
+                        
                         <h4>Biiling Details</h4>
                         <div class="row">
                             <div class="col-lg-12">
                                 <label for="cun-name">Reciever Name</label>
-                                <input type="text" id="cun-name">
+                                <input type="text" id="cun-name" name="name">
                             </div>
                             
                             <div class="col-lg-12">
                                 <label for="street">Address</label>
-                                <input type="text" id="street" class="street-first">
+                                <input type="text" id="street" class="street-first" name="address">
                                 
                             </div>
     
                             <div class="col-lg-12">
                                 <label for="phone">Phone</label>
-                                <input type="text" id="phone">
+                                <input type="text" id="phone" name="phone">
                             </div>
                             
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <div class="checkout-content">
-                            <input type="text" placeholder="Enter Your Coupon Code">
-                        </div>
+                        
                         <div class="place-order">
                             <h4>Your Order</h4>
                             <div class="order-total">

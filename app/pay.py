@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from flask_login import login_user, logout_user, login_required, current_user
-from .models import User, Product
+from .models import User, Product, OrderedProduct, Order, Address
 from . import db
+from datetime import datetime
 
 
 
@@ -65,6 +66,45 @@ def checkout():
         return render_template('checkout.html', products=product_list, total_price=0)
 
 
+@login_required
+@pay.route('/checkout/order', methods=['POST'])
+def new_order():
+
+    total_price = session.get('all_total_price')
+    cart_items = session.get('cart_item')
+    product_list = []
+
+    phone = request.form.get('phone')
+    address = request.form.get('address')
+    order_address = db.session.query(Address).filter_by(address=address).first()
+    what = current_user.id
+    print(what)
+
+    order = Order(None, datetime.today().strftime('%Y-%m-%d'), what, 1, 1, False, phone, order_address.id)
+    db.session.add(order)
+    db.session.commit()
+
+    if cart_items:
+        cart_ids = list(cart_items.keys())
+
+        for i in range(len(cart_ids)):
+            cart_ids[i] = int(cart_ids[i])
+
+        for id in cart_ids:
+            product = Product.query.get(id)
+            product.quantity = cart_items[str(id)]['quantity']
+            product_list.append(product)
+
+        for product in product_list:
+            ordered_product = OrderedProduct(None, order.id, product.id, product.price, product.quantity)
+            db.session.add(ordered_product)
+            db.session.commit()
+
+        return redirect(url_for('pay.empty_cart'))
+
+    else : 
+        return redirect(url_for('pay.checkout'))
+
 
 		
 @pay.route('/add/<int:id>', methods=['POST'])
@@ -122,8 +162,10 @@ def add_product_to_cart(id):
 @pay.route('/empty')
 def empty_cart():
 	
-    session.clear()
-    return redirect(url_for('products.view_catalog'))
+    session['cart_item'].clear()
+    session['all_total_quantity'] = 0
+    session['all_total_price'] = 0
+    return redirect(url_for('profile.view_profile'))
 
 
 
