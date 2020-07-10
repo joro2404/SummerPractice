@@ -2,7 +2,6 @@
 {% block title %} {% endblock %}
 {% block head %}
     {{ super() }}
-    
     <script type="text/javascript">
         $(document).ready(function() {
             var max_fields = 5;
@@ -84,10 +83,10 @@
                     <form action="/admin/create_product" method="POST" enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-25">
-                                <label>Product Name</label>
+                                <label class="col-sm-2 col-form-label">Name</label>
                             </div>
                             <div class="col-75">
-                                <input type="text" name="product_name" placeholder="Your product name...">
+                                <input class="form-control" type="text" name="product_name" placeholder="Your product name...">
                             </div>
                         </div>
 
@@ -100,47 +99,48 @@
                             </div>
                         </div>-->
                     
-                        <div class="container_fields">
+                        <div class="container_fields" style="margin-top:10px; margin-bottom:10px;">
                             <div class="row">
-                            <div class="col-25">
-                                <label>Tag 1</label>
+                                <div  style="margin-top:10px; margin-bottom:10px;">
+                                    <label class="col-sm-2 col-form-label">Tag1</label>
+                                </div>
+                                <div >
+                                    <select name="tag" class="form-control" style="margin-top:10px; margin-bottom:10px;">
+                                        {% for tag in tags %}
+                                            <option value="{{ tag.id }}">{{ tag.tag }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
                             </div>
-                            <div class="col-75">
-                                <select name="id_of_tag1">
-                                    {% for tag in tags %}
-                                        <option value="{{ tag.id }}">{{ tag.tag }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            
                         </div>
 
-                        <div class="row right">
-                            <button class="add_form_field">Add Tag</button>
+
+                        <div class="row" style="margin-top:20px; margin-bottom:20px;">
+                            <button class="add_form_field btn btn-secondary" >Add Tag</button>
                         </div>
 
-                        <div class="container_fields">
+                        <div class="container_fields" style="margin-top:10px; margin-bottom:10px;">
                             <div class="row">
-                            <div class="col-25">
-                                <label>Brand</label>
+                                <div  style="margin-top:10px; margin-bottom:10px;">
+                                    <label class="col-sm-2 col-form-label">Brand</label>
+                                </div>
+                                <div >
+                                    <select name="brand" class="form-control" style="margin-top:10px; margin-bottom:10px;">
+                                        {% for brand in brands %}
+                                            <option value="{{ brand.id }}">{{ brand.brandname }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
                             </div>
-                            <div class="col-75">
-                                <select name="brand">
-                                    {% for brand in brands %}
-                                        <option value="{{ brand.id }}">{{ brand.brandname }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            
                         </div>
 
                          <div class="container_fields">
                             <div class="row">
                             <div class="col-25">
-                                <label>Gender</label>
+                                <label class="col-sm-2 col-form-label" style="margin-top:10px; margin-bottom:10px;">Gender</label>
                             </div>
                             <div class="col-75">
-                                <select name="gender">
+                                <select name="gender" class="form-control" style="margin-top:10px; margin-bottom:10px;">
                                     {% for gender in genders %}
                                         <option value="{{ gender.id }}">{{ gender.gender }}</option>
                                     {% endfor %}
@@ -150,24 +150,24 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-25">
-                            <label>Price</label>
+                            <div class="col-25" style="margin-top:10px; margin-bottom:10px;">
+                            <label class="col-sm-2 col-form-label">Price</label>
                             </div>
-                            <div class="col-75">
-                            <input type="number" name="price" placeholder="Price of th product">
+                            <div class="col-75" style="margin-top:10px; margin-bottom:10px;">
+                                <input class="form-control" type="number" name="price" placeholder="Price of th product">
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-25">
-                            <label>Description of the product</label>
+                            <div class="col-25" style="margin-top:10px; margin-bottom:10px;">
+                            <label class="col-sm-2 col-form-label">Description</label>
                             </div>
-                            <div class="col-75">
-                            <textarea name="description" placeholder="Description of the product.." style="height:200px"></textarea>
+                            <div class="col-75" style="margin-top:10px; margin-bottom:10px;">
+                            <textarea class="form-control" name="description" placeholder="Description of the product.." style="height:200px"></textarea>
                             </div>
                         </div>
                         <div class="row right">
-                            <input type="submit" value="Submit">
+                            <input class="btn btn-primary" type="submit" value="Submit">
                         </div>
                     </form>
                 </div>
