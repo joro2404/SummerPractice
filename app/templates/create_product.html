@@ -127,7 +127,7 @@
                             <div class="col-75">
                                 <select name="brand">
                                     {% for brand in brands %}
-                                        <option value="{{ brand.id }}">{{ brand.name }}</option>
+                                        <option value="{{ brand.id }}">{{ brand.brandname }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -141,7 +141,7 @@
                             </div>
                             <div class="col-75">
                                 <select name="gender">
-                                    {% for gender in gender %}
+                                    {% for gender in genders %}
                                         <option value="{{ gender.id }}">{{ gender.gender }}</option>
                                     {% endfor %}
                                 </select>
@@ -160,7 +160,7 @@
 
                         <div class="row">
                             <div class="col-25">
-                            <label>Description of your Recipe</label>
+                            <label>Description of the product</label>
                             </div>
                             <div class="col-75">
                             <textarea name="description" placeholder="Description of the product.." style="height:200px"></textarea>
@@ -177,5 +177,6 @@
 {% endblock %}
 <!---->
 {% block javascript %}
+    {{ super() }}
     <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
 {% endblock %}

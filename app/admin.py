@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from flask_login import login_user, logout_user, login_required, current_user
-from .models import User, Product, OrderedProduct, Order, Address, Status
+from .models import User, Product, OrderedProduct, Order, Address, Status, Brand, Gender, Tag
 from . import db
 from datetime import datetime
 
@@ -162,7 +162,11 @@ def create_product():
 
         if request.method == 'GET':
 
-            return render_template('create_product.html')
+            brands = Brand.query.all()
+            genders = Gender.query.all()
+            tags = Tag.query.all()
+
+            return render_template('create_product.html', brands=brands, genders=genders, tags=tags)
 
     else:
         message = True
