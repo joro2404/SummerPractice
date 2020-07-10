@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}Index{% endblock %}
+{% block title %}Admin{% endblock %}
 {% block head %}
     {{ super() }}
 {% endblock %}
@@ -11,7 +11,8 @@
                 <div class="col-lg-12">
                     <div class="breadcrumb-text">
                         <a href="/"><i class="fa fa-home"></i> Home</a>
-                        <span>Profile</span>
+                        <a href="/admin">Admin</a>
+                        <span>Queue</span>
                     </div>
                 </div>
             </div>
@@ -33,7 +34,7 @@
                         <h4 class="fw-title"><a class="fw-link" href="/admin/accepted">Accepted ❯</a></h4>
                     </div>
                     <div class="filter-widget">
-                        <h4 class="fw-title"><a class="fw-link" href="#">Add Product ❯</a></h4>
+                        <h4 class="fw-title"><a class="fw-link" href="/admin/create_product">Add Product ❯</a></h4>
                     </div>
                     <div class="filter-widget">
                         <h4 class="fw-title"><a class="fw-link" href="#">? ❯</a></h4>

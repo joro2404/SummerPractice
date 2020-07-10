@@ -1,0 +1,181 @@
+{% extends "layout.html" %}
+{% block title %} {% endblock %}
+{% block head %}
+    {{ super() }}
+    
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var max_fields = 5;
+            var wrapper = $(".container_fields");
+            var add_button = $(".add_form_field");
+
+            var x = 1;
+            $(add_button).click(function(e) {
+                e.preventDefault();
+                if (x < max_fields) {
+                    x++;
+                    $(wrapper).append('\
+                    <div class="row">\
+                        <div class="col-25">\
+                        <label>Tag ' + x + '</label>\
+                        <br>\
+                        <a href="#" class="delete">Remove</a>\
+                        </div>\
+                        <div class="col-75">\
+                        <select name="id_of_tag' + x + '">\
+                            {% for product in products %}\
+                                <option value="{{ tag.id }}">{{ tag.tag }}</option>\
+                            {% endfor %}\
+                        </select>\
+                        </div>\
+                    </div>\
+                    ');
+                } else {
+                    alert('You Reached the limits')
+                }
+            });
+
+            $(wrapper).on("click", ".delete", function(e) {
+                e.preventDefault();
+                $(this).parent('div').parent('div').remove();
+                x--;
+            })
+        });
+    </script>
+{% endblock %}
+{% block content %}
+
+    <div class="breacrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text">
+                        <a href="/"><i class="fa fa-home"></i> Home</a>
+                        <a href="/admin">Admin</a>
+                        <span>Add Product</span>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="product-shop spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-8 order-2 order-lg-1 produts-sidebar-filter">
+                    <div class="filter-widget">
+                        <h4 class="fw-title"><a class="fw-link" href="/admin">All Orders ❯</a></h4>
+                    </div>
+                    <div class="filter-widget">
+                        <h4 class="fw-title"><a class="fw-link" href="/admin/queue">Queue ❯</a></h4>
+                    </div>
+                    <div class="filter-widget">
+                        <h4 class="fw-title"><a class="fw-link" href="/admin/accepted">Accepted ❯</a></h4>
+                    </div>
+                    <div class="filter-widget">
+                        <h4 class="fw-title"><a class="fw-link fw-active" href="/admin/create_product">Add Product ❯</a></h4>
+                    </div>
+                    <div class="filter-widget">
+                        <h4 class="fw-title"><a class="fw-link" href="#">? ❯</a></h4>
+                    </div>
+                </div>
+
+                <div class="col-lg-9 order-1 order-lg-2">
+                    <form action="/admin/create_product" method="POST" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-25">
+                                <label>Product Name</label>
+                            </div>
+                            <div class="col-75">
+                                <input type="text" name="product_name" placeholder="Your product name...">
+                            </div>
+                        </div>
+
+                        <!--<div class="row">
+                            <div class="col-25">
+                                <label>Picture</label>
+                            </div>
+                            <div class="col-75">
+                                <input type="file" name="file" class="file">
+                            </div>
+                        </div>-->
+                    
+                        <div class="container_fields">
+                            <div class="row">
+                            <div class="col-25">
+                                <label>Tag 1</label>
+                            </div>
+                            <div class="col-75">
+                                <select name="id_of_tag1">
+                                    {% for tag in tags %}
+                                        <option value="{{ tag.id }}">{{ tag.tag }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                        </div>
+
+                        <div class="row right">
+                            <button class="add_form_field">Add Tag</button>
+                        </div>
+
+                        <div class="container_fields">
+                            <div class="row">
+                            <div class="col-25">
+                                <label>Brand</label>
+                            </div>
+                            <div class="col-75">
+                                <select name="brand">
+                                    {% for brand in brands %}
+                                        <option value="{{ brand.id }}">{{ brand.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                        </div>
+
+                         <div class="container_fields">
+                            <div class="row">
+                            <div class="col-25">
+                                <label>Gender</label>
+                            </div>
+                            <div class="col-75">
+                                <select name="gender">
+                                    {% for gender in gender %}
+                                        <option value="{{ gender.id }}">{{ gender.gender }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                        </div>
+
+                        <div class="row">
+                            <div class="col-25">
+                            <label>Price</label>
+                            </div>
+                            <div class="col-75">
+                            <input type="number" name="price" placeholder="Price of th product">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-25">
+                            <label>Description of your Recipe</label>
+                            </div>
+                            <div class="col-75">
+                            <textarea name="description" placeholder="Description of the product.." style="height:200px"></textarea>
+                            </div>
+                        </div>
+                        <div class="row right">
+                            <input type="submit" value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+<!---->
+{% block javascript %}
+    <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+{% endblock %}

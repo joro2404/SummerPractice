@@ -145,3 +145,25 @@ def finish_order(id):
     else:
         message = True
         return render_template('error.html', message=message)
+
+
+
+@login_required
+@admin.route('/admin/create_product', methods=['GET', 'POST'])
+def create_product():
+
+    user = User.query.get(current_user.id)
+
+    if user.is_admin:
+
+        if request.method == 'POST':
+        
+            return redirect(url_for('products.view_catalog'))
+
+        if request.method == 'GET':
+
+            return render_template('create_product.html')
+
+    else:
+        message = True
+        return render_template('error.html', message=message)
