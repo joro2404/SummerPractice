@@ -101,7 +101,7 @@ class Product(db.Model):
         self.price = price
         self.brand_id = brand_id
         self.overall_rating = overall_rating
-        self.gender = gender
+        self.gender_id = gender
         self.description = description
 
 

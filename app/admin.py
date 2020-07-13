@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from flask_login import login_user, logout_user, login_required, current_user
-from .models import User, Product, OrderedProduct, Order, Address, Status, Brand, Gender, Tag
+from .models import User, Product, OrderedProduct, Order, Address, Status, Brand, Gender, Tag, ProductTags
 from . import db
 from datetime import datetime
 
@@ -157,7 +157,26 @@ def create_product():
     if user.is_admin:
 
         if request.method == 'POST':
-        
+            
+            name = request.form.get('product_name')
+            brand_id = request.form.get('brand')
+            gender_id = request.form.get('gender')
+            price = request.form.get('price')
+            description = request.form.get('description')
+
+            new_product = Product(None, name, float(price), brand_id, 0, gender_id, description)
+
+            db.session.add(new_product)
+            db.session.commit()
+
+            product = db.session.query(Product).filter_by(name=name).first()
+            i = 1
+            while(request.form.get('tag_id_' + str(i)) is not None):
+                tag_id = request.form.get('tag_id_' + str(i))
+                new_tag = ProductTags(None, product.id, tag_id)
+                db.session.add(new_tag)
+                db.session.commit()
+                i += 1
             return redirect(url_for('products.view_catalog'))
 
         if request.method == 'GET':

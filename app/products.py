@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from . import db
 from sqlalchemy.sql import func
-from .models import Product, Brand, Tag, ProductTags, Gender
+from flask_login import login_user, logout_user, login_required, current_user
+from .models import Product, Brand, Tag, ProductTags, Gender, User
 import decimal
 
 
@@ -85,6 +86,8 @@ def view_product(id):
     tags = db.session.query(ProductTags).filter(ProductTags.product_id == id)
     gender = Gender.query.get(product.gender_id)
 
+    user = User.query.get(current_user.id) 
+
     tag_names = []
     for tag in tags:
         var = Tag.query.get(tag.tag_id)
@@ -97,4 +100,52 @@ def view_product(id):
             tagstr += ", "
 
     
-    return render_template('view_product.html', product=product, discounted_price=discounted_price, brand=brand, tags=tagstr, gender=gender.gender)
+    return render_template('view_product.html', user=user, product=product, discounted_price=discounted_price, brand=brand, tags=tagstr, gender=gender.gender)
+
+@login_required
+@products.route('/edit_product/<int:id>')
+def edit_product(id):
+
+    user = User.query.get(current_user.id)
+
+    if user.is_admin:
+
+        if request.method == 'POST':
+            
+            name = request.form.get('product_name')
+            brand_id = request.form.get('brand')
+            gender_id = request.form.get('gender')
+            price = request.form.get('price')
+            description = request.form.get('description')
+            
+
+            db.session.query(Order).filter_by(id=id).update({ 'name':name, 'price':float(price), 'brand_id':brand_id, 'gender_id': gender_id, 'description':description})
+            db.session.commit()
+
+            product = db.session.query(Product).filter_by(name=name).first()
+            
+            tags = db.session.query(ProductTags).filter_by(product_id=product.id).all()
+            db.session.delete(tags)
+            db.session.commit()
+
+            i = 1
+            while(request.form.get('tag_id_' + str(i)) is not None):
+                tag_id = request.form.get('tag_id_' + str(i))
+                new_tag = ProductTags(None, product.id, tag_id)
+                db.session.add(new_tag)
+                db.session.commit()
+                i += 1
+            return redirect(url_for('products.view_product', id=id))
+
+        if request.method == 'GET':
+            
+            product = Product.query.get(id)
+            brands = Brand.query.all()
+            genders = Gender.query.all()
+            tags = Tag.query.all()
+
+            return render_template('edit_product.html', product=product, brands=brands, genders=genders, tags=tags)
+
+    else:
+        message = True
+        return render_template('error.html', message=message)

@@ -1,0 +1,167 @@
+{% extends "layout.html" %}
+{% block title %} {% endblock %}
+{% block head %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var max_fields = 5;
+            var wrapper = $(".container_fields");
+            var add_button = $(".add_form_field");
+
+            var x = 1;
+            $(add_button).click(function(e) {
+                e.preventDefault();
+                if (x < max_fields) {
+                    x++;
+                    $(wrapper).append('\
+                    <div class="container_fields" style="margin-top:10px; margin-bottom:10px;">\
+                        <div class="row">\
+                            <div  style="margin-top:10px; margin-bottom:10px;">\
+                                <label class="col-sm-2 col-form-label">Tag'+x+'</label>\
+                                <br>\
+                                <a href="#" class="delete">Remove</a>\
+                            </div>\
+                            <div >\
+                                <select name="tag_id_' + x + '" class="form-control" style="margin-top:10px; margin-bottom:10px;">\
+                                    {% for tag in tags %}\
+                                        <option value="{{ tag.id }}">{{ tag.tag }}</option>\
+                                    {% endfor %}\
+                                </select>\
+                            </div>\
+                        </div>\
+                    </div>\
+                    ');
+                } else {
+                    alert('You Reached the limits')
+                }
+            });
+
+            $(wrapper).on("click", ".delete", function(e) {
+                e.preventDefault();
+                $(this).parent('div').parent('div').remove();
+                x--;
+            })
+        });
+    </script>
+{% endblock %}
+{% block content %}
+
+    <div class="breacrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text">
+                        <a href="/"><i class="fa fa-home"></i> Home</a>
+                        <a href="/admin">Admin</a>
+                        <span>Add Product</span>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="display: flex; justify-content: center; margin-top: 50px; margin-bottom: 50px">
+        <form action="/edit_product" method="POST" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-25">
+                    <label class="col-sm-2 col-form-label">Name</label>
+                </div>
+                <div class="col-75">
+                    <input class="form-control" type="text" name="product_name" value="{{ product.name }}" placeholder="Your product name...">
+                </div>
+            </div>
+
+            <!--<div class="row">
+                <div class="col-25">
+                    <label>Picture</label>
+                </div>
+                <div class="col-75">
+                    <input type="file" name="file" class="file">
+                </div>
+            </div>-->
+        
+            <div class="container_fields" style="margin-top:10px; margin-bottom:10px;">
+                <div class="row">
+                    <div  style="margin-top:10px; margin-bottom:10px;">
+                        <label class="col-sm-2 col-form-label">Tag1</label>
+                    </div>
+                    <div >
+                        <select name="tag_id_1" class="form-control" style="margin-top:10px; margin-bottom:10px;">
+                            {% for tag in tags %}
+                                <option value="{{ tag.id }}">{{ tag.tag }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row" style="margin-top:20px; margin-bottom:20px;">
+                <button type="button" class="add_form_field btn btn-secondary" >Add Tag</button>
+            </div>
+
+            <div style="margin-top:10px; margin-bottom:10px;">
+                <div class="row">
+                    <div  style="margin-top:10px; margin-bottom:10px;">
+                        <label class="col-sm-2 col-form-label">Brand</label>
+                    </div>
+                    <div >
+                        <select name="brand" class="form-control" style="margin-top:10px; margin-bottom:10px;">
+                            {% for brand in brands %}
+                                {% if brand.id == product.brand_id %}
+                                    <option value="{{ brand.id }}" selected>{{ brand.brandname }}</option>
+                                {% else %}
+                                    <option value="{{ brand.id }}">{{ brand.brandname }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="row">
+                <div class="col-25">
+                    <label class="col-sm-2 col-form-label" style="margin-top:10px; margin-bottom:10px;">Gender</label>
+                </div>
+                <div class="col-75">
+                    <select name="gender" class="form-control" style="margin-top:10px; margin-bottom:10px;">
+                        {% for gender in genders %}
+                            
+                            {% if gender.id == product.gender_id %}
+                                    <option value="{{ gender.id }}" selected>{{ gender.gender }}</option>
+                                {% else %}
+                                    <option value="{{ gender.id }}">{{ gender.gender }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                
+            </div>
+
+            <div class="row">
+                <div class="col-25" style="margin-top:10px; margin-bottom:10px;">
+                <label class="col-sm-2 col-form-label" >Price</label>
+                </div>
+                <div class="col-75" style="margin-top:10px; margin-bottom:10px;">
+                    <input class="form-control" step = "0.01" type="number" name="price" value = "{{ product.price }}" placeholder="Price of thе product">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-25" style="margin-top:10px; margin-bottom:10px;">
+                <label class="col-sm-2 col-form-label">Description</label>
+                </div>
+                <div class="col-75" style="margin-top:10px; margin-bottom:10px;">
+                <textarea class="form-control" name="description" placeholder="Description of the product.." style="height:200px">{{ product.description }}</textarea>
+                </div>
+            </div>
+            <div class="row right">
+                <input class="btn btn-primary" type="submit" value="Submit">
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
