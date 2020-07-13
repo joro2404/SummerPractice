@@ -28,9 +28,17 @@
             <form method="post" action="/checkout/order" class="checkout-form">
                 <div class="row">
                     <div class="col-lg-6">
-                        
                         <h4>Biiling Details</h4>
-                        <div class="row">
+                        <select name="address" id="address" class="nice-select">
+                            {% for address in addresses %}
+                            <option value="{{ address.id }}">{{ address.address }}, {{ address.receiver_name }}, {{ address.receiver_phone }}</option>
+                            {% endfor %}
+                        </select>
+                        <br>
+                        <br>
+                        <br>
+                        <a href="/profile/my_addresses/new" class="btn orders-btn">New address</a>
+                        <!-- <div class="row">
                             <div class="col-lg-12">
                                 <label for="cun-name">Reciever Name</label>
                                 <input type="text" id="cun-name" name="name" required>
@@ -46,8 +54,7 @@
                                 <label for="phone">Phone</label>
                                 <input type="text" id="phone" name="phone" required>
                             </div>
-                            
-                        </div>
+                        </div> -->
                     </div>
                     <div class="col-lg-6">
                         

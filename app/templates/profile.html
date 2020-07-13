@@ -56,13 +56,13 @@
                                         <td>Photo</td>
                                         <td>
                                             <a href="/profile/orders/{{ order.id }}">
-                                            {% for order_product in orders_products[loop.index - 1] %}
+                                            {% for order_product in orders_products[loop.index0] %}
                                                 {% for product in products %}
                                                     {% if order_product.product_id == product.id %}
                                                         {{ product.name }}
                                                     {% endif %}
                                                 {% endfor %}
-                                                {% if loop.index - 1 < orders_products|length %}
+                                                {% if loop.nextitem %}
                                                     +
                                                 {% endif %}
                                             {% endfor %}
@@ -72,10 +72,12 @@
                                             {% for status in statuses %}
                                                 {% if status.id == order.status_id %}
                                                     {{ status.status }}
+                                                    <br>
+                                                    {{ order.date }}
                                                 {% endif %}
                                             {% endfor %}
                                         </td>
-                                        <td>${{ orders_total_price[loop.index - 1] }}</td>
+                                        <td>${{ orders_total_price[loop.index0] }}</td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>

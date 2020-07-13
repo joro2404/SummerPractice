@@ -45,6 +45,7 @@ def checkout():
 
     total_price = session.get('all_total_price')
     cart_items = session.get('cart_item')
+    addresses = db.session.query(Address).filter_by(user_id=current_user.id).all()
     product_list = []
 
     if cart_items:
@@ -59,11 +60,11 @@ def checkout():
             product_list.append(product)
         
 
-        return render_template('checkout.html', products=product_list, total_price=total_price)
+        return render_template('checkout.html', products=product_list, total_price=total_price, addresses=addresses)
 
 
     else : 
-        return render_template('checkout.html', products=product_list, total_price=0)
+        return render_template('checkout.html', products=product_list, total_price=0, addresses=addresses)
 
 
 @login_required
@@ -74,18 +75,14 @@ def new_order():
     cart_items = session.get('cart_item')
     product_list = []
 
-    phone = request.form.get('phone')
     address = request.form.get('address')
-    order_address = db.session.query(Address).filter_by(address=address).first()
-    what = current_user.id
-    print(what)
-
-    order = Order(None, datetime.today().strftime('%Y-%m-%d'), what, 1, 1, False, phone, order_address.id)
-    db.session.add(order)
-    db.session.commit()
 
     if cart_items:
         cart_ids = list(cart_items.keys())
+
+        order = Order(None, datetime.today().strftime('%Y-%m-%d'), current_user.id, 1, 1, False, address)
+        db.session.add(order)
+        db.session.commit()
 
         for i in range(len(cart_ids)):
             cart_ids[i] = int(cart_ids[i])

@@ -12,11 +12,46 @@ admin = Blueprint('admin', __name__)
 @login_required
 @admin.route('/admin')
 def view_admin():
-
     user = User.query.get(current_user.id)
-
     products = Product.query.all()
-    orders = Order.query.all()
+
+    from_date = request.args.get('from-date')
+    to_date = request.args.get('to-date')
+    order_way = request.args.get('order')
+
+    order_by = ''
+
+    if order_way:
+        if order_way == 'desc':
+            order_by = Order.date.desc()
+        elif order_way == 'asc':
+            order_by = Order.date.asc()
+
+    else:
+        order_by = Order.date.desc()
+        
+
+    if from_date and not to_date:
+        orders = db.session.query(Order) \
+            .filter(Order.date >= from_date) \
+            .order_by(order_by) \
+            .all()
+
+    elif not from_date and to_date:
+        orders = db.session.query(Order) \
+            .filter(Order.date <= to_date) \
+            .order_by(order_by) \
+            .all()
+
+    elif not from_date and not to_date:
+        orders = Order.query.order_by(order_by).all()
+
+    else:
+        orders = db.session.query(Order) \
+            .filter(Order.date >= from_date, Order.date <= to_date) \
+            .order_by(order_by) \
+            .all()
+
     statuses = Status.query.all()
     total_price = 0
     orders_total_price = []
@@ -45,7 +80,6 @@ def view_admin():
 @login_required
 @admin.route('/admin/queue')
 def queue():
-
     user = User.query.get(current_user.id)
 
     products = Product.query.all()
@@ -78,7 +112,6 @@ def queue():
 @login_required
 @admin.route('/admin/take_order/<int:id>')
 def take_order(id):
-
     user = User.query.get(current_user.id)
 
     if user.is_admin:
@@ -97,7 +130,6 @@ def take_order(id):
 @login_required
 @admin.route('/admin/accepted')
 def accepted():
-
     user = User.query.get(current_user.id)
 
     products = Product.query.all()
@@ -131,7 +163,6 @@ def accepted():
 @login_required
 @admin.route('/admin/finish_order/<int:id>')
 def finish_order(id):
-
     user = User.query.get(current_user.id)
 
     if user.is_admin:
@@ -151,7 +182,6 @@ def finish_order(id):
 @login_required
 @admin.route('/admin/create_product', methods=['GET', 'POST'])
 def create_product():
-
     user = User.query.get(current_user.id)
 
     if user.is_admin:

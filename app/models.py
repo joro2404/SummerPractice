@@ -125,18 +125,16 @@ class Order(db.Model):
     date = db.Column(db.Date, nullable=False)
     payment_method_id = db.Column(db.Integer, ForeignKey('payment_methods.id'), nullable=False)
     is_paid = db.Column(db.Boolean, nullable=False)
-    phone_number = db.Column(db.Text, nullable=False)
     address_id = db.Column(db.Integer, ForeignKey('addresses.id'), nullable=False)
     admin_id = db.Column(db.Integer, ForeignKey('users.id'), nullable=True)
 
-    def __init__(self, id, date, user_id, status_id, payment_method_id, is_paid, phone_number, address_id):
+    def __init__(self, id, date, user_id, status_id, payment_method_id, is_paid, address_id):
         self.id = id
         self.date = date
         self.user_id = user_id
         self.status_id = status_id
         self.payment_method_id = payment_method_id
         self.is_paid = is_paid
-        self.phone_number = phone_number
         self.address_id = address_id
 
 
