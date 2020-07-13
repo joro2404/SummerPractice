@@ -57,16 +57,16 @@
                                 <tbody>
                                     {% for order in orders %}
                                     <tr>
-                                        <td><a style="color: black;"href="/admin/take_order/{{ order.id }}">Take</a></td>
+                                        <td><a href="/admin/take_order/{{ order.id }}">Take</a></td>
                                         <td>
-                                            <a style="color: black;"href="#">
-                                            {% for order_product in orders_products[loop.index - 1] %}
+                                            <a href="#">
+                                            {% for order_product in orders_products[loop.index0] %}
                                                 {% for product in products %}
                                                     {% if order_product.product_id == product.id %}
                                                         {{ product.name }}
                                                     {% endif %}
                                                 {% endfor %}
-                                                {% if loop.index - 1 < orders_products|length %}
+                                                {% if loop.nextitem %}
                                                     +
                                                 {% endif %}
                                             {% endfor %}
@@ -76,6 +76,8 @@
                                             {% for status in statuses %}
                                                 {% if status.id == order.status_id %}
                                                     {{ status.status }}
+                                                    <br>
+                                                    {{ order.date }}
                                                 {% endif %}
                                             {% endfor %}
                                         </td>

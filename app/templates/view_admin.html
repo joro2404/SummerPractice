@@ -2,6 +2,29 @@
 {% block title %}IndAdminex{% endblock %}
 {% block head %}
     {{ super() }}
+    <script type="text/javascript">
+        window.onload = function() {
+            const query = window.location.search.substring(1);
+            let url;
+            if (query.length !== 0) {
+                url = new URLSearchParams(query);
+            }
+
+            if (url.get('from-date') !== null) {
+                document.getElementById('from-date').value = url.get('from-date');
+            }
+
+            if (url.get('to-date') !== null) {
+                document.getElementById('to-date').value = url.get('to-date');
+            }
+
+            if (url.get('order') !== null) {
+                if (url.get('order') === 'asc') {
+                    document.getElementById('order').selectedIndex = 1;
+                }
+            }
+        };
+    </script>
 {% endblock %}
 {% block content %}
     <!-- Breadcrumb Section Begin -->
@@ -42,6 +65,19 @@
 
                 <div class="col-lg-9 order-1 order-lg-2">
                     <div class="profile-list">
+                        <form action="/admin" method="GET">
+                            <label for="from-date">From</label>
+                            <input type="date" name="from-date" id="from-date" class="date-filter">
+                            -
+                            <label for="to-date">To</label>
+                            <input type="date" name="to-date" id="to-date" class="date-filter">
+
+                            <select name="order" id="order" class="form-control select-filter">
+                                <option value="desc">Descending</option>
+                                <option value="asc">Ascending</option>
+                            </select>
+                            <input type="submit" class="orders-btn filter-btn" value="Filter">
+                        </form>
                         <div class="row">
                             <table class="table table-striped">
                                 <thead>
@@ -58,14 +94,14 @@
                                     <tr>
                                         <td>{{ order.user_id }}</td>
                                         <td>
-                                            <a style="color: black;"href="#">
-                                            {% for order_product in orders_products[loop.index - 1] %}
+                                            <a href="#">
+                                            {% for order_product in orders_products[loop.index0] %}
                                                 {% for product in products %}
                                                     {% if order_product.product_id == product.id %}
                                                         {{ product.name }}
                                                     {% endif %}
                                                 {% endfor %}
-                                                {% if loop.index - 1 < orders_products|length %}
+                                                {% if loop.nextitem %}
                                                     +
                                                 {% endif %}
                                             {% endfor %}
@@ -75,10 +111,12 @@
                                             {% for status in statuses %}
                                                 {% if status.id == order.status_id %}
                                                     {{ status.status }}
+                                                    <br>
+                                                    {{ order.date }}
                                                 {% endif %}
                                             {% endfor %}
                                         </td>
-                                        <td>${{ orders_total_price[loop.index - 1] + 24 }}</td>
+                                        <td>${{ orders_total_price[loop.index0] + 24 }}</td>
                                         <td>{% if order.is_paid %} Yes  {% else %} No {% endif %}</td>
                                     </tr>
                                     {% endfor %}

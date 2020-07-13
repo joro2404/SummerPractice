@@ -3959,6 +3959,31 @@ a:not([href]):hover {
 	width: 33%;
 }
 
+.date-filter {
+    height: 32px;
+    border: 2px solid #ebebeb;
+    margin: 15px 0px;
+    padding-left: 5px;
+}
+
+.filter-btn {
+	height: 32px;
+	margin: 15px 10px;
+	border: none;
+}
+
+.filter-btn:hover {
+	color: black;
+}
+
+.select-filter {
+	margin-left: 10px;
+	width: auto;
+	display: inline-block;
+	height: 32px;
+	padding: 0 5px;
+}
+
 /* ------------------------------ Responsive Media Styles ---------------------------- */
 
 @media only screen and (min-width: 1200px) and (max-width: 1920px) {

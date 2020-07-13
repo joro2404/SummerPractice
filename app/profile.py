@@ -13,7 +13,7 @@ profile = Blueprint('profile', __name__)
 def view_profile():
     address = db.session.query(Address).filter_by(user_id=current_user.id).first()
 
-    orders = db.session.query(Order).filter_by(user_id=current_user.id).limit(5).all()
+    orders = db.session.query(Order).filter_by(user_id=current_user.id).order_by(Order.id.desc()).limit(5).all()
 
     products = Product.query.all()
 
@@ -39,7 +39,7 @@ def view_profile():
 @profile.route('/profile/my_orders')
 @login_required
 def view_orders():
-    orders = db.session.query(Order).filter_by(user_id=current_user.id).all()
+    orders = db.session.query(Order).filter_by(user_id=current_user.id).order_by(Order.id.desc()).all()
 
     products = Product.query.all()
 

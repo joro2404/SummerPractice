@@ -9,12 +9,17 @@ import decimal
 products = Blueprint('products', __name__)
 
 
-@products.route('/catalog', methods=['GET', 'POST'])
-def view_catalog():
+@products.route('/catalog')
+def redirect_to_catalog():
+    return redirect(url_for('products.view_catalog', id=1))
+
+
+@products.route('/catalog/<int:id>', methods=['GET', 'POST'])
+def view_catalog(id):
     brands = Brand.query.all()
     tags = Tag.query.all()
     genders = Gender.query.all()
-    products = Product.query.all()
+    products = Product.query.offset((id * 9) - 9).limit(id * 9).all()
     list_of_prices = [product.price for product in products]
     cheapest = min(list_of_prices)
     most_expensive = max(list_of_prices)
@@ -74,7 +79,6 @@ def view_catalog():
 
         search_q = request.args.get('search')
         if search_q:
-            print('asd')
             search = "%{}%".format(search_q)
             products = db.session.query(Product) \
                 .join(Brand, Brand.id == Product.brand_id) \
@@ -106,7 +110,6 @@ def view_catalog():
 
     search_q = request.args.get('search')
     if search_q:
-        print('asd1')
         search = "%{}%".format(search_q)
         products = Product.query.filter(Product.name.like(search)).all()
 
