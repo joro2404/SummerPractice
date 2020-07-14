@@ -164,13 +164,13 @@
                                         </div>
                                         <ul>
                                             <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                            <li class="quick-view"><a href="/catalog/{{ product.id }}">+ Quick View</a></li>
+                                            <li class="quick-view"><a href="/catalog/product/{{ product.id }}">+ Quick View</a></li>
                                             <!-- <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li> -->
                                         </ul>
                                     </div>
                                     <div class="pi-text">
                                         <div class="brand-name">{{ brands_products[loop.index - 1].brandname }}</div>
-                                        <a href="/catalog/{{ product.id }}">
+                                        <a href="/catalog/product/{{ product.id }}">
                                             <h5>{{ product.name }}</h5>
                                         </a>
                                         <div class="product-price" price="{{ '%0.2f'|format(product.price) }}">

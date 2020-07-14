@@ -121,7 +121,7 @@ def view_catalog(id):
     return render_template('catalog.html', products=products, brands_products=brands_products, brands=brands, cheapest=cheapest, most_expensive=most_expensive, tags=tags, genders=genders)
 
 
-@products.route('/catalog/<int:id>')
+@products.route('/catalog/product/<int:id>')
 def view_product(id):
 
     product = Product.query.get(id)
@@ -147,7 +147,7 @@ def view_product(id):
     return render_template('view_product.html', user=user, product=product, discounted_price=discounted_price, brand=brand, tags=tagstr, gender=gender.gender)
 
 @login_required
-@products.route('/edit_product/<int:id>')
+@products.route('/edit_product/<int:id>', methods=['GET', 'POST'])
 def edit_product(id):
 
     user = User.query.get(current_user.id)
@@ -163,14 +163,15 @@ def edit_product(id):
             description = request.form.get('description')
             
 
-            db.session.query(Order).filter_by(id=id).update({ 'name':name, 'price':float(price), 'brand_id':brand_id, 'gender_id': gender_id, 'description':description})
+            db.session.query(Product).filter_by(id=id).update({ 'name':name, 'price':float(price), 'brand_id':brand_id, 'gender_id': gender_id, 'description':description})
             db.session.commit()
 
             product = db.session.query(Product).filter_by(name=name).first()
             
             tags = db.session.query(ProductTags).filter_by(product_id=product.id).all()
-            db.session.delete(tags)
-            db.session.commit()
+            for tag in tags:
+                db.session.delete(tag)
+                db.session.commit()
 
             i = 1
             while(request.form.get('tag_id_' + str(i)) is not None):
