@@ -3,9 +3,16 @@
 
 {% block head %}
 	{{ super() }}
+    <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Ensures optimal rendering on mobile devices. -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" /> <!-- Optimal Internet Explorer compatibility -->
 {% endblock %}
 
 {% block content %}
+
+    <script
+        src="https://www.paypal.com/sdk/js?client-id=ASRwH6H2xiv90grqZ6i27Reb2wN92Ac716lxJMRXSsG_ShiE41metyCSt_4uK15BEZvwysDYJGS6wVrr"> // Required. Replace SB_CLIENT_ID with your sandbox client ID.
+    </script>
+
 	<!-- Breadcrumb Section Begin -->
     <div class="breacrumb-section">
         <div class="container">
@@ -68,12 +75,38 @@
                                     {% endfor %}
                                     <li class="fw-normal">Subtotal <span>${{ total_price }}</span></li>
                                     <li class="fw-normal">Shipping <span>$24.00</span></li>
-                                    <li class="total-price">Total <span>${{ '%0.2f'| format(total_price|float + 24) }}</span></li>
+                                    <li  class="total-price">Total <span >${{ '%0.2f'| format(total_price|float + 24) }}</span></li>
                                 </ul>
-                                
+                                <div id="total" style="hidden: true;">{{ '%0.2f'| format(total_price|float + 24) }}</div>
                                 <div class="order-btn">
                                     <button type="submit" class="site-btn place-btn">Cash on Demand</button>
+                                    <div id="paypal-button-container" style="margin-top:20px;"></div>
                                 </div>
+
+
+                                <script>
+                                    paypal.Buttons({
+                                        createOrder: function(data, actions) {
+                                        // This function sets up the details of the transaction, including the amount and line item details.
+                                        return actions.order.create({
+                                            purchase_units: [{
+                                            amount: {
+                                                value: document.getElementById("total").innerHTML
+
+                                            }
+                                            }]
+                                        });
+                                        },
+                                        onApprove: function(data, actions) {
+                                        // This function captures the funds from the transaction.
+                                        return actions.order.capture().then(function(details) {
+                                            // This function shows a transaction success message to your buyer.
+                                            alert('Transaction completed by ' + details.payer.name.given_name);
+                                        });
+                                        }
+                                    }).render('#paypal-button-container');
+                                    // This function displays Smart Payment Buttons on your web page.
+                                </script>
                             </div>
                         </div>
                     </div>
