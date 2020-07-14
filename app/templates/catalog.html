@@ -157,7 +157,11 @@
                             <div class="col-lg-4 col-sm-6" id="product-{{ loop.index }}">
                                 <div class="product-item">
                                     <div class="pi-pic">
+                                        {% if pictures[loop.index0] %}
+                                        <img src="{{ pictures[loop.index0].path }}" alt="">
+                                        {% else %}
                                         <img src="{{ url_for('static', filename='img/products/product-1.jpg') }}" alt="">
+                                        {% endif %}
                                         <!-- <div class="sale pp-sale">Sale</div> -->
                                         <div class="icon">
                                             <i class="icon_heart_alt"></i>
@@ -184,10 +188,16 @@
                         </div>
                     </div>
                     <div class="loading-more">
-                        <i class="icon_loading"></i>
+                        {% for page in range(pages) %}
+                        <!-- <form action="/catalog/{{ loop.index }}" method="POST"> -->
+                            <a href="{{ url_for('products.view_catalog', id=loop.index) }}">{{ loop.index }}</a>
+                            <!-- <input type="submit" value="{{ loop.index }}"></input> -->
+                        <!-- </form> -->
+                        {% endfor %}
+                        <!-- <i class="icon_loading"></i>
                         <a href="#">
                             Loading More
-                        </a>
+                        </a> -->
                     </div>
                 </div>
             </div>

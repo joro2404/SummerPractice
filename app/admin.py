@@ -1,12 +1,15 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from flask_login import login_user, logout_user, login_required, current_user
-from .models import User, Product, OrderedProduct, Order, Address, Status, Brand, Gender, Tag, ProductTags
+from .models import User, Product, OrderedProduct, Order, Address, Status, Brand, Gender, Tag, ProductTags, Picture
 from . import db
 from datetime import datetime
-
+from werkzeug.utils import secure_filename
+import os
 
 
 admin = Blueprint('admin', __name__)
+upload_folder = "/home/vesko/Desktop/online_store/SummerPractice/app/static/img/uploads"
+default_img = "/home/vesko/Desktop/online_store/SummerPractice/app/static/img/products/women-1.jpg"
 
 
 @login_required
@@ -187,6 +190,16 @@ def create_product():
     if user.is_admin:
 
         if request.method == 'POST':
+            if 'file' not in request.files:
+                return redirect(request.url)
+            file = request.files['file']
+            if file.filename == '':
+                filename = secure_filename("/default.jpg")
+                filepath = os.path.join("/static/img", filename)
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(upload_folder, filename))
+                filepath = os.path.join("/static/img/uploads", filename)
             
             name = request.form.get('product_name')
             brand_id = request.form.get('brand')
@@ -207,7 +220,12 @@ def create_product():
                 db.session.add(new_tag)
                 db.session.commit()
                 i += 1
-            return redirect(url_for('products.view_catalog'))
+
+            new_picture = Picture(None, product.id, filepath)
+            db.session.add(new_picture)
+            db.session.commit()
+            
+            return redirect(url_for('products.view_catalog', id=1))
 
         if request.method == 'GET':
 
@@ -220,3 +238,8 @@ def create_product():
     else:
         message = True
         return render_template('error.html', message=message)
+
+
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
