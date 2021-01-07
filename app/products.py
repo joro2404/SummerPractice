@@ -2,9 +2,10 @@ from flask import Blueprint, render_template, request, redirect, url_for
 from . import db
 from sqlalchemy.sql import func
 from flask_login import login_user, logout_user, login_required, current_user
-from .models import Product, Brand, Tag, ProductTags, Gender, User
+from .models import Product, Brand, Tag, ProductTags, Gender, User, Picture
 from sqlalchemy import or_
 import decimal
+import math
 
 
 products = Blueprint('products', __name__)
@@ -22,9 +23,21 @@ def view_catalog(id):
     genders = Gender.query.all()
     products = Product.query.offset((id * 9) - 9).limit(id * 9).all()
     list_of_prices = [product.price for product in products]
-    cheapest = min(list_of_prices)
-    most_expensive = max(list_of_prices)
+    if list_of_prices:
+        cheapest = min(list_of_prices)
+        most_expensive = max(list_of_prices)
+    else:
+        cheapest = 0
+        most_expensive = 0
 
+    count_of_products = db.session.query(func.count(Product.id)).first()
+    pages = math.ceil(count_of_products[0] / 9)
+
+    pictures = []
+
+    for product in products:
+        picture = Picture.query.filter(Picture.product_id == product.id).first()
+        pictures.append(picture)
 
     if request.method == 'POST':
         brands_to_display = []
@@ -38,7 +51,6 @@ def view_catalog(id):
             brand_name = request.form.get(brand.brandname)
 
             if brand_name == 'on':
-                print(brand.brandname)
                 brands_to_display.append(brand)
 
 
@@ -46,7 +58,6 @@ def view_catalog(id):
             gender_name = request.form.get(gender.gender)
 
             if gender_name == 'on':
-                print(gender.gender)
                 genders_to_display.append(gender)
 
 
@@ -54,7 +65,6 @@ def view_catalog(id):
             tag_name = request.form.get(tag.tag)
 
             if tag_name == 'on':
-                print(tag.tag)
                 tags_to_display.append(tag)
 
 
@@ -90,6 +100,8 @@ def view_catalog(id):
                 .filter(or_(*tags_ids)) \
                 .filter(Product.price >= min_price, Product.price <= max_price) \
                 .filter(Product.name.like(search)) \
+                .offset((id * 9) - 8) \
+                .limit(id * 9) \
                 .all()
 
         else:
@@ -101,24 +113,40 @@ def view_catalog(id):
                 .filter(or_(*genders_ids)) \
                 .filter(or_(*tags_ids)) \
                 .filter(Product.price >= min_price, Product.price <= max_price) \
+                .offset((id * 9) - 8) \
+                .limit(id * 9) \
                 .all()
     
         brands_products = []
         for product in products:
             brands_products.append(Brand.query.get(product.brand_id))
 
-        return render_template('catalog.html', products=products, brands_products=brands_products, brands=brands, cheapest=cheapest, most_expensive=most_expensive, tags=tags, brands_to_display=brands_to_display, genders=genders, genders_to_display=genders_to_display, tags_to_display=tags_to_display, max_price=max_price, min_price=min_price)
+        count_of_products = db.session.query(func.count(Product.id)).first()
+        pages = math.ceil(count_of_products[0] / 9)
+
+        return render_template('catalog.html', \
+            products=products, brands_products=brands_products, brands=brands, \
+            cheapest=cheapest, most_expensive=most_expensive, tags=tags, brands_to_display=brands_to_display, \
+            genders=genders, genders_to_display=genders_to_display, tags_to_display=tags_to_display, \
+            max_price=max_price, min_price=min_price, pages=pages, pictures=pictures)
 
     search_q = request.args.get('search')
     if search_q:
         search = "%{}%".format(search_q)
-        products = Product.query.filter(Product.name.like(search)).all()
+        products = Product.query \
+            .filter(Product.name.like(search)) \
+            .offset((id * 9) - 9) \
+            .limit(id * 9) \
+            .all()
 
     brands_products = []
     for product in products:
         brands_products.append(Brand.query.get(product.brand_id))
 
-    return render_template('catalog.html', products=products, brands_products=brands_products, brands=brands, cheapest=cheapest, most_expensive=most_expensive, tags=tags, genders=genders)
+    return render_template('catalog.html', \
+        products=products, brands_products=brands_products, brands=brands, \
+        cheapest=cheapest, most_expensive=most_expensive, tags=tags, \
+        genders=genders, pages=pages, pictures=pictures)
 
 
 @products.route('/catalog/product/<int:id>')
@@ -143,11 +171,12 @@ def view_product(id):
         if i != len(tag_names) - 1:
             tagstr += ", "
 
-    
-    return render_template('view_product.html', user=user, product=product, discounted_price=discounted_price, brand=brand, tags=tagstr, gender=gender.gender)
+    picture = db.session.query(Picture).filter_by(product_id = product.id).first()
 
-@login_required
+    return render_template('view_product.html', user=user, product=product, discounted_price=discounted_price, brand=brand, tags=tagstr, gender=gender.gender, picture=picture)
+
 @products.route('/edit_product/<int:id>', methods=['GET', 'POST'])
+@login_required
 def edit_product(id):
 
     user = User.query.get(current_user.id)
