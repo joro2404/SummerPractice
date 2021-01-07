@@ -103,6 +103,42 @@ def new_order():
         return redirect(url_for('pay.checkout'))
 
 
+@login_required
+@pay.route('/checkout/paypal', methods=['POST'])
+def paypal():
+
+    total_price = session.get('all_total_price')
+    cart_items = session.get('cart_item')
+    product_list = []
+
+    address = request.form.get('address')
+
+    if cart_items:
+        cart_ids = list(cart_items.keys())
+
+        order = Order(None, datetime.today().strftime('%Y-%m-%d'), current_user.id, 1, 1, True, address)
+        db.session.add(order)
+        db.session.commit()
+
+        for i in range(len(cart_ids)):
+            cart_ids[i] = int(cart_ids[i])
+
+        for id in cart_ids:
+            product = Product.query.get(id)
+            product.quantity = cart_items[str(id)]['quantity']
+            product_list.append(product)
+
+        for product in product_list:
+            ordered_product = OrderedProduct(None, order.id, product.id, product.price, product.quantity)
+            db.session.add(ordered_product)
+            db.session.commit()
+
+        return redirect(url_for('pay.empty_cart'))
+
+    else : 
+        return redirect(url_for('pay.checkout'))
+
+
 		
 @pay.route('/add/<int:id>', methods=['POST'])
 def add_product_to_cart(id):
